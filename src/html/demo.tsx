@@ -29,6 +29,7 @@ export function HtmlDemo() {
                 return; //only run in click and drag
             //console.log(e);
             ctx.beginPath();
+            ctx.strokeStyle = isPen ? 'black': 'red';
             ctx.moveTo(lastX, lastY); //start from
             ctx.lineTo(e.offsetX, e.offsetY); //go to
             ctx.stroke(); //to actually draw the path on canvas
