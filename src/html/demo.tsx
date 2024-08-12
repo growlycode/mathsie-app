@@ -4,7 +4,7 @@ export function HtmlDemo() {
     const ref = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        const ctx = ref?.current?.getContext('2d');
+        const ctx: CanvasRenderingContext2D | null | undefined  = ref?.current?.getContext('2d');
         console.log(ctx?.canvas.width);
 
         const canvas = ctx?.canvas;
@@ -27,8 +27,8 @@ export function HtmlDemo() {
         let hue = 0;
         let direction = true;
     
-        function draw(e) {
-            if (!isDrawing)
+        function draw(e: any) {
+            if (!isDrawing || !ctx)
                 return; //only run in click and drag
             console.log(e);
             ctx.strokeStyle = `hsl(${hue},100%,50%)`;
