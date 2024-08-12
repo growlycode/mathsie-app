@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function HtmlDemo() {
     const ref = useRef<HTMLCanvasElement>(null);
-
-    // const [isPen, setIsPen] = useState<boolean>(true);
-    const [pointerType, setPointerType] = useState<string>('?');
 
     useEffect(() => {
         const ctx: CanvasRenderingContext2D | null | undefined = ref?.current?.getContext('2d');
@@ -14,10 +11,10 @@ export function HtmlDemo() {
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
 
-        ctx.strokeStyle = '#51c9bb';
+        ctx.strokeStyle = 'black';
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
-        ctx.lineWidth = 30;
+        ctx.lineWidth = 2;
 
         //flag
         let isDrawing = false; //don't draw when mouse is just moving mouse w/o doing anything
@@ -25,44 +22,32 @@ export function HtmlDemo() {
         //where to start a line from and then where to end it
         let lastX = 0;
         let lastY = 0;
-        let hue = 0;
-        let direction = true;
+        let isPen = true;
 
         function draw(e: any) {
             if (!isDrawing || !ctx)
                 return; //only run in click and drag
             //console.log(e);
-            ctx.strokeStyle = `hsl(${hue},100%,50%)`;
             ctx.beginPath();
             ctx.moveTo(lastX, lastY); //start from
             ctx.lineTo(e.offsetX, e.offsetY); //go to
             ctx.stroke(); //to actually draw the path on canvas
             [lastX, lastY] = [e.offsetX, e.offsetY];
-            // lastX=e.offsetX;
-            // lastY=e.offsetY;
-
-            hue++;
-            if (hue >= 360) {
-                hue = 0;
-            }
-            if (ctx.lineWidth >= 80 || ctx.lineWidth <= 1) {
-                direction = !direction;
-            }
-            if (direction)
-                ctx.lineWidth++;
-            else
-                ctx.lineWidth--;
         }
 
         canvas.addEventListener('pointerdown',
             (event: any) => {
-                //setIsPen(event.pointerType === 'pen');
-                setPointerType(event.pointerType);
+                console.log('pointerdown')
+                isPen = event.pointerType === 'pen';
             },
             false
         );
-        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mousemove', (e) => {
+            console.log('mousemove')
+            draw(e)
+        });
         canvas.addEventListener('mousedown', (e) => {
+            console.log('mousedown')
             isDrawing = true;
             [lastX, lastY] = [e.offsetX, e.offsetY];
         });
@@ -75,6 +60,8 @@ export function HtmlDemo() {
         //canvas on mobile
 
         document.body.addEventListener("touchstart", function (e) {
+            
+            console.log('touchstart')
             if (e.target == canvas) {
                 e.preventDefault();
                 const clientX = e.touches[0].clientX;
@@ -84,12 +71,14 @@ export function HtmlDemo() {
             }
         }, false);
         document.body.addEventListener("touchend", function (e) {
+            console.log('touchend')
             if (e.target == canvas) {
                 e.preventDefault();
                 isDrawing = false;
             }
         }, false);
         document.body.addEventListener("touchmove", function (e: any) {
+            console.log('touchmove')
             if (e.target == canvas) {
                 e.preventDefault();
                 e.offsetX = e.targetTouches[0].clientX;
@@ -99,5 +88,5 @@ export function HtmlDemo() {
         }, false);
     }, [])
 
-    return <><div>Pointer type: {pointerType}</div><canvas id="draw" width="800" height="800" ref={ref}></canvas></>;
+    return <canvas id="draw" width="800" height="800" ref={ref}></canvas>;
 }
