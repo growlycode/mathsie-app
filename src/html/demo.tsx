@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export function HtmlDemo() {
     const ref = useRef<HTMLCanvasElement>(null);
 
-    const [isPen, setIsPen] = useState<boolean>(true);
+    // const [isPen, setIsPen] = useState<boolean>(true);
     const [pointerType, setPointerType] = useState<string>('?');
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export function HtmlDemo() {
         function draw(e: any) {
             if (!isDrawing || !ctx)
                 return; //only run in click and drag
-            console.log(e);
+            //console.log(e);
             ctx.strokeStyle = `hsl(${hue},100%,50%)`;
             ctx.beginPath();
             ctx.moveTo(lastX, lastY); //start from
@@ -56,7 +56,7 @@ export function HtmlDemo() {
 
         canvas.addEventListener('pointerdown',
             (event: any) => {
-                setIsPen(event.pointerType === 'pen');
+                //setIsPen(event.pointerType === 'pen');
                 setPointerType(event.pointerType);
             },
             false
