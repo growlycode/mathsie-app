@@ -30,7 +30,7 @@ export function HtmlDemo() {
                 return; //only run in click and drag
             //console.log(e);
             ctx.beginPath();
-            ctx.strokeStyle = isPen ? 'black': 'red';
+            ctx.strokeStyle = isPen ? 'black' : 'red';
             ctx.moveTo(lastX, lastY); //start from
             ctx.lineTo(e.offsetX, e.offsetY); //go to
             ctx.stroke(); //to actually draw the path on canvas
@@ -46,10 +46,10 @@ export function HtmlDemo() {
         );
 
         const onMouseMove = (e: MouseEvent) => {
-            console.log('mousemove')
+            console.log('mousemove');
             draw(e);
         };
- 
+
         const throttledMouseMove = throttle(onMouseMove, 30);
         canvas.addEventListener('mousemove', throttledMouseMove);
         canvas.addEventListener('mousedown', (e) => {
@@ -66,14 +66,16 @@ export function HtmlDemo() {
         //canvas on mobile
 
         document.body.addEventListener("touchstart", function (e) {
-            
+
             console.log('touchstart')
             if (e.target == canvas) {
                 e.preventDefault();
                 const clientX = e.touches[0].clientX;
                 const clientY = e.touches[0].clientY;
                 isDrawing = true;
-                draw({ offsetX: clientX, offsetY: clientY })
+
+                [lastX, lastY] = [clientX, clientY];
+                //draw({ offsetX: clientX, offsetY: clientY })
             }
         }, false);
         document.body.addEventListener("touchend", function (e) {
@@ -93,6 +95,7 @@ export function HtmlDemo() {
             }
         }, false);
     }, [])
+
 
     return <canvas id="draw" ref={ref}></canvas>;
 }
