@@ -144,7 +144,7 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
         function handleTouchEnd(e: any) {
             if (e.target == canvas) {
                 e.preventDefault();
-                isDrawing = false;
+                finish();
             }
         }
 

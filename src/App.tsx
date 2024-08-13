@@ -23,7 +23,6 @@ const operations: Operation[] = [
   { operandLeft: 17, operandRight: 7, operator: plus },
   { operandLeft: 18, operandRight: 7, operator: plus },
   { operandLeft: 19, operandRight: 7, operator: plus },
-  { operandLeft: 20, operandRight: 7, operator: plus },
 ];
 
 
