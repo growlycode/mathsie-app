@@ -16,19 +16,43 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.mathsie-canvas {
+.mathsie-workbook {
   border: 1px solid grey;
 
-  &> * {
-    display: absolute;
-    left: 0;
-    top: 0
+  .mathsie-worksheet {
+    display: flex;
+
+    .equations {
+      display: grid;
+      grid-template-columns: 1fr 0.5fr 1fr 0.5fr;
+      text-align: center;
+      flex-basis: 50%;
+      font-size: 3rem;
+      gap: 1rem;
+
+      -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+      
+
+      .operator,
+      .equals {
+        text-align: center;
+      }
+    }
+
+    .mathsie-canvas {
+      flex-basis: 50%;
+      border: 1px solid red;
+    }
   }
 }

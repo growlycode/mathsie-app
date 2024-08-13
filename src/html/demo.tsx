@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import throttle from 'lodash.throttle';
 
-export function HtmlDemo() {
+export function DrawingCanvas() {
     const ref = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -10,7 +10,7 @@ export function HtmlDemo() {
         if (!ctx || !canvas) return;
 
         canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
+        canvas.width = window.innerWidth / 2;
 
         ctx.strokeStyle = 'black';
         ctx.lineJoin = 'round';
@@ -25,16 +25,30 @@ export function HtmlDemo() {
         let lastY = 0;
         let isPen = true;
 
+        function getMousePos(e: any) {
+            var rect = canvas!.getBoundingClientRect(), // abs. size of element
+                scaleX = canvas!.width / rect.width,    // relationship bitmap vs. element for x
+                scaleY = canvas!.height / rect.height;  // relationship bitmap vs. element for y
+
+            return {
+                x: (e.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+                y: (e.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+            }
+        }
+
         function draw(e: any) {
-            if (!isDrawing || !ctx)
-                return; //only run in click and drag
+            if (!isDrawing || !ctx)// || !isPen)
+                return; //only run in click and drag, and only with the pen
+
+            const { x, y } = getMousePos(e);
             //console.log(e);
-            ctx.beginPath();
+
             ctx.strokeStyle = isPen ? 'black' : 'red';
+            ctx.beginPath();
             ctx.moveTo(lastX, lastY); //start from
-            ctx.lineTo(e.offsetX, e.offsetY); //go to
+            ctx.lineTo(x, y); //go to
             ctx.stroke(); //to actually draw the path on canvas
-            [lastX, lastY] = [e.offsetX, e.offsetY];
+            [lastX, lastY] = [x, y];
         }
 
         canvas.addEventListener('pointerdown',
@@ -53,9 +67,10 @@ export function HtmlDemo() {
         const throttledMouseMove = throttle(onMouseMove, 30);
         canvas.addEventListener('mousemove', throttledMouseMove);
         canvas.addEventListener('mousedown', (e) => {
-            console.log('mousedown')
             isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY];
+
+            const { x, y } = getMousePos(e);
+            [lastX, lastY] = [x, y];
         });
 
 
@@ -64,10 +79,7 @@ export function HtmlDemo() {
 
 
         //canvas on mobile
-
         document.body.addEventListener("touchstart", function (e) {
-
-            console.log('touchstart')
             if (e.target == canvas) {
                 e.preventDefault();
                 const clientX = e.touches[0].clientX;
@@ -75,7 +87,6 @@ export function HtmlDemo() {
                 isDrawing = true;
 
                 [lastX, lastY] = [clientX, clientY];
-                //draw({ offsetX: clientX, offsetY: clientY })
             }
         }, false);
         document.body.addEventListener("touchend", function (e) {
@@ -97,5 +108,5 @@ export function HtmlDemo() {
     }, [])
 
 
-    return <canvas id="draw" ref={ref}></canvas>;
+    return <canvas id="draw" className="mathsie-canvas" ref={ref}></canvas>;
 }
