@@ -23,6 +23,14 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
         const { ctx, canvas } = getContext();
         if (!ctx || !canvas) return;
 
+        const currentBytes = canvas.toDataURL();
+
+
+        if (currentBytes == uws.canvasBytes) {
+
+            console.log('Same, not redrawing');
+            return;
+        }
         console.log('Loading ', uws.id, ' from ', uws.canvasBytes)
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
