@@ -36,7 +36,7 @@ export function DrawingCanvas() {
             }
         }
 
-        function draw({x, y}: any) {
+        function draw({ x, y }: any) {
             if (!isDrawing || !ctx)// || !isPen)
                 return; //only run in click and drag, and only with the pen
 
@@ -77,15 +77,25 @@ export function DrawingCanvas() {
         canvas.addEventListener('mouseout', () => isDrawing = false);
 
 
+        function getTouchPos(e: any) {
+
+            var bcr = e.target.getBoundingClientRect();
+            var x = e.targetTouches[0].clientX - bcr.x;
+            var y = e.targetTouches[0].clientY - bcr.y;
+
+            return { x, y };
+        }
+
         //canvas on mobile
         document.body.addEventListener("touchstart", function (e) {
             if (e.target == canvas) {
                 e.preventDefault();
-                const clientX = e.touches[0].clientX;
-                const clientY = e.touches[0].clientY;
+                // const clientX = e.touches[0].clientX;
+                // const clientY = e.touches[0].clientY;
                 isDrawing = true;
 
-                [lastX, lastY] = [clientX, clientY];
+                const { x, y } = getTouchPos(e);
+                [lastX, lastY] = [x, y];
             }
         }, false);
         document.body.addEventListener("touchend", function (e) {
@@ -99,9 +109,10 @@ export function DrawingCanvas() {
             console.log('touchmove')
             if (e.target == canvas) {
                 e.preventDefault();
-                e.offsetX = e.targetTouches[0].clientX;
-                e.offsetY = e.targetTouches[0].clientY;
-                draw(e)
+                // e.offsetX = e.targetTouches[0].clientX;
+                // e.offsetY = e.targetTouches[0].clientY;
+
+                draw(getTouchPos(e))
             }
         }, false);
     }, [])
