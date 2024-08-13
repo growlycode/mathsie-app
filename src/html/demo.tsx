@@ -1,16 +1,56 @@
 import { useEffect, useRef } from "react";
 import throttle from 'lodash.throttle';
+import { UserWorksheet } from "../core/workbook";
 
-export function DrawingCanvas() {
+interface DrawingCanvasProps {
+    id: string;
+    uws: UserWorksheet;
+    onSave: (uws: UserWorksheet) => Promise<any>;
+}
+
+export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
     const ref = useRef<HTMLCanvasElement>(null);
 
-    useEffect(() => {
+    function getContext() {
         const ctx: CanvasRenderingContext2D | null | undefined = ref?.current?.getContext('2d');
         const canvas = ctx?.canvas;
+
+        return { ctx, canvas };
+    }
+
+    useEffect(() => {
+
+        const { ctx, canvas } = getContext();
+        if (!ctx || !canvas) return;
+
+        console.log('Loading ', uws.id, ' from ', uws.canvasBytes)
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!uws.canvasBytes) return;
+
+
+        var img = new Image;
+        img.width = canvas.width;
+        img.height = canvas.height;
+
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0);
+        }
+        img.src = uws.canvasBytes;
+
+        ctx.drawImage(img, 0, 0);
+
+
+    }, [uws.canvasBytes]);
+
+    useEffect(() => {
+        console.log('Processing ', uws.id)
+        const { ctx, canvas } = getContext();
         if (!ctx || !canvas) return;
 
         canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth / 2;
+        canvas.width = window.innerWidth * 0.4;
 
         ctx.strokeStyle = 'black';
         ctx.lineJoin = 'round';
@@ -37,10 +77,9 @@ export function DrawingCanvas() {
         }
 
         function draw({ x, y }: any) {
-            if (!isDrawing || !ctx)// || !isPen)
+            if (!isDrawing || !ctx) {
                 return; //only run in click and drag, and only with the pen
-
-            //console.log(e);
+            }
 
             ctx.strokeStyle = isPen ? 'black' : 'red';
             ctx.beginPath();
@@ -50,73 +89,85 @@ export function DrawingCanvas() {
             [lastX, lastY] = [x, y];
         }
 
-        canvas.addEventListener('pointerdown',
-            (event: any) => {
-                console.log('pointerdown')
-                isPen = event.pointerType === 'pen';
-            },
-            false
-        );
+        function finish() {
+            if (!ctx || !canvas) return;
 
-        const onMouseMove = (e: MouseEvent) => {
-            console.log('mousemove');
-            draw(getMousePos(e));
-        };
+            if (isDrawing) {
+                isDrawing = false;
+                onSave({ ...uws, canvasBytes: canvas.toDataURL() });
+            }
+        }
 
+        
+        const onMouseMove = (e: MouseEvent) => draw(getMousePos(e));
         const throttledMouseMove = throttle(onMouseMove, 30);
-        canvas.addEventListener('mousemove', throttledMouseMove);
-        canvas.addEventListener('mousedown', (e) => {
+
+        function handleMouseDown(e: any) {
             isDrawing = true;
 
             const { x, y } = getMousePos(e);
             [lastX, lastY] = [x, y];
-        });
+        }
 
+        function handlePointerDown(e: any) { isPen = e.pointerType === 'pen' };
 
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mouseout', () => isDrawing = false);
-
+        canvas.addEventListener('pointerdown', handlePointerDown);
+        canvas.addEventListener('mousemove', throttledMouseMove);
+        canvas.addEventListener('mousedown', handleMouseDown);
+        canvas.addEventListener('mouseup', finish);
+        canvas.addEventListener('mouseout', finish);
 
         function getTouchPos(e: any) {
-
             var bcr = e.target.getBoundingClientRect();
             var x = e.targetTouches[0].clientX - bcr.x;
             var y = e.targetTouches[0].clientY - bcr.y;
-
             return { x, y };
         }
 
-        //canvas on mobile
-        document.body.addEventListener("touchstart", function (e) {
+        function handleTouchStart(e: any) {
             if (e.target == canvas) {
                 e.preventDefault();
-                // const clientX = e.touches[0].clientX;
-                // const clientY = e.touches[0].clientY;
                 isDrawing = true;
 
                 const { x, y } = getTouchPos(e);
                 [lastX, lastY] = [x, y];
             }
-        }, false);
-        document.body.addEventListener("touchend", function (e) {
-            console.log('touchend')
+        }
+
+        function handleTouchMove(e: any) {
+            if (e.target == canvas) {
+                e.preventDefault();
+                draw(getTouchPos(e))
+            }
+        }
+
+        function handleTouchEnd(e: any) {
             if (e.target == canvas) {
                 e.preventDefault();
                 isDrawing = false;
             }
-        }, false);
-        document.body.addEventListener("touchmove", function (e: any) {
-            console.log('touchmove')
-            if (e.target == canvas) {
-                e.preventDefault();
-                // e.offsetX = e.targetTouches[0].clientX;
-                // e.offsetY = e.targetTouches[0].clientY;
+        }
 
-                draw(getTouchPos(e))
-            }
-        }, false);
-    }, [])
+        //canvas on mobile
+        document.body.addEventListener("touchstart", handleTouchStart);
+        document.body.addEventListener("touchend", handleTouchEnd);
+        document.body.addEventListener("touchmove", handleTouchMove);
+
+        return function cleanup() {
+            console.log('Unloading ', uws.id)
+            canvas.removeEventListener('pointerdown', handlePointerDown);
+            canvas.removeEventListener('mousemove', throttledMouseMove)
+            canvas.removeEventListener('mouseup', finish);  
+            canvas.removeEventListener('mouseup', finish);
+            canvas.removeEventListener('mouseout', finish);
+            document.body.removeEventListener("touchstart", handleTouchStart);
+            document.body.addEventListener("touchend", handleTouchEnd);
+            document.body.addEventListener("touchmove", handleTouchMove);
+        }
+
+    }, [uws.id])
 
 
-    return <canvas id="draw" className="mathsie-canvas" ref={ref}></canvas>;
+    return <canvas id={`c${id}`} className="mathsie-canvas" ref={ref}></canvas>;
 }
+

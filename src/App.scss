@@ -3,33 +3,41 @@
   height: 100vh;
 }
 
+.body {
+  background-color: white;
+}
+
 * {
   margin: 0;
   padding: 0;
-  overflow: hidden;
-}
-
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  //overflow: hidden;
 }
 
 .mathsie-workbook {
+
   border: 1px solid grey;
+
+  &--controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+
+    button {
+      border: 1px solid grey;
+    }
+
+    .pages {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+  }
 
   .mathsie-worksheet {
     display: flex;
+
 
     .equations {
       display: grid;
@@ -39,10 +47,37 @@
       font-size: 3rem;
       gap: 1rem;
 
-      -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-      
+      .operand,
+      .operator,
+      .equals {
+        -webkit-user-select: none;
+        /* Safari */
+        -ms-user-select: none;
+        /* IE 10 and IE 11 */
+        user-select: none;
+        /* Standard syntax */
+      }
+
+      .is-error {
+        display: none;
+      }
+
+
+      &.marking {
+        grid-template-columns: auto 1fr 0.5fr 1fr 0.5fr;
+
+        .is-error {
+          display: block;
+        }
+
+
+        input[type='checkbox'] {
+          width: 2rem;
+          height: 2rem;
+          margin-left: 1rem;
+          accent-color: red;
+        }
+      }
 
       .operator,
       .equals {
@@ -51,8 +86,9 @@
     }
 
     .mathsie-canvas {
-      flex-basis: 50%;
+      flex-basis: 40%;
       border: 1px solid red;
     }
+
   }
 }
