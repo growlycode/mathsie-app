@@ -36,11 +36,10 @@ export function DrawingCanvas() {
             }
         }
 
-        function draw(e: any) {
+        function draw({x, y}: any) {
             if (!isDrawing || !ctx)// || !isPen)
                 return; //only run in click and drag, and only with the pen
 
-            const { x, y } = getMousePos(e);
             //console.log(e);
 
             ctx.strokeStyle = isPen ? 'black' : 'red';
@@ -61,7 +60,7 @@ export function DrawingCanvas() {
 
         const onMouseMove = (e: MouseEvent) => {
             console.log('mousemove');
-            draw(e);
+            draw(getMousePos(e));
         };
 
         const throttledMouseMove = throttle(onMouseMove, 30);
