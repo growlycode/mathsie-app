@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import throttle from 'lodash.throttle';
 
 export function HtmlDemo() {
     const ref = useRef<HTMLCanvasElement>(null);
@@ -43,10 +44,14 @@ export function HtmlDemo() {
             },
             false
         );
-        canvas.addEventListener('mousemove', (e) => {
+
+        const onMouseMove = (e: MouseEvent) => {
             console.log('mousemove')
-            draw(e)
-        });
+            draw(e);
+        };
+ 
+        const throttledMouseMove = throttle(onMouseMove, 30);
+        canvas.addEventListener('mousemove', throttledMouseMove);
         canvas.addEventListener('mousedown', (e) => {
             console.log('mousedown')
             isDrawing = true;
@@ -89,5 +94,5 @@ export function HtmlDemo() {
         }, false);
     }, [])
 
-    return <canvas id="draw" width="800" height="800" ref={ref}></canvas>;
+    return <canvas id="draw" ref={ref}></canvas>;
 }

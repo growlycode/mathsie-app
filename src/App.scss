@@ -25,6 +25,10 @@
 
 .mathsie-canvas {
   border: 1px solid grey;
-  /*display: flex;*/
 
+  &> * {
+    display: absolute;
+    left: 0;
+    top: 0
+  }
 }
