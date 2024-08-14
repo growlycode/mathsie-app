@@ -1,4 +1,4 @@
-import { CanvasPath } from "react-sketch-canvas";
+import { CanvasPath } from "../html/types";
 
 export interface Operator {
     symbol: string;

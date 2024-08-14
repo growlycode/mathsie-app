@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-    ReactSketchCanvas,
-    type ReactSketchCanvasRef
-} from "react-sketch-canvas";
 import { UserWorksheet } from "../core/workbook";
+import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
 
 interface DrawingCanvasProps {
     uws: UserWorksheet;
@@ -46,13 +43,13 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     }
 
     return <div className="canvas-wrapper">
-        <ReactSketchCanvas
+        <MReactSketchCanvas
             ref={canvasRef}
             className="mathsie-canvas"
             canvasColor="transparent"
             strokeColor={penColor}
             eraserWidth={30}
-            // allowOnlyPointerType="pen"
+            eraserPen="mouse"
         />
         <div className="canvas--actions">
             <i className="fa fa-pencil"
