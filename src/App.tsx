@@ -97,6 +97,8 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
   uworksheet: UserWorksheet, isMarking: boolean, onSave: (uws: UserWorksheet) => Promise<any>
 }) {
 
+  const [debug, setDebug] = useState<string>();
+
   const ref = useRef<HTMLDivElement>(null);
   function convertRemToPixels(rem: number) {    
     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -105,20 +107,27 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     const div = ref.current;
     if (!div) return;
 
+
     const padding = window.innerHeight * 0.04;
     const eqHeight = div.getBoundingClientRect().height;
     const rem = convertRemToPixels(0.5);
     console.log("0.5rem: ", rem);
     console.log("equations height: ", eqHeight);
     console.log("equations padding: ", padding);
-    const height = (eqHeight - (padding*2)) / uworksheet.worksheet.operations.length;
+
+    const eqInnerHeight = eqHeight - (padding*2);
+    const rows = uworksheet.worksheet.operations.length;
+    const height =  eqInnerHeight / rows;
     const requiredHeight = `${height - rem}px`;
+    
+    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
   }, [])
 
   return <div className='mathsie-worksheet'>
+    <div style={{position: 'absolute'}}>{debug}</div>
     <div className={`equations${isMarking ? " marking" : ""}`} ref={ref}>
       {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
         <div className='is-error'><input type='checkbox' /></div>
