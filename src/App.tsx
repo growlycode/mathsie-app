@@ -4,7 +4,7 @@ import './App.scss';
 import { useEffect, useRef, useState } from 'react';
 import { Operator, Operation, UserWorkbook, UserWorksheet } from './core/workbook';
 import { listWithItemReplaced } from './util/array';
-import { SketchCanvas } from './html/sketch';
+import { SketchCanvas } from './canvas/sketch';
 
 
 const plus: Operator = {

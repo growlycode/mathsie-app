@@ -1,4 +1,4 @@
-import { CanvasPath } from "../html/types";
+import { CanvasPath } from "../canvas/types";
 
 export interface Operator {
     symbol: string;

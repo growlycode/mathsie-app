@@ -49,7 +49,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             canvasColor="transparent"
             strokeColor={penColor}
             eraserWidth={30}
-            eraserPen="mouse"
+            eraserPen="touch"
         />
         <div className="canvas--actions">
             <i className="fa fa-pencil"
