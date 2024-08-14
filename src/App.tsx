@@ -53,40 +53,49 @@ function App() {
 
   const [currentSheet, setCurrentSheet] = useState<number>(0);
   const [workbook, setWorkbook] = useState<UserWorkbook>(uWorkbook);
-  const [isMarking, setIsMarking] = useState<boolean>(true);
+  const [isMarking, setIsMarking] = useState<boolean>(false);
 
-  function nextSheet() {
-    setCurrentSheet(s => (s + 1) % workbook.worksheets.length);
-  }
-
-  function prevSheet() {
-    setCurrentSheet(s => Math.max(0, s - 1));
-  }
 
   function updateUserWorkbook(uws: UserWorksheet) {
-    console.log('Updating ', uws.id)
     setWorkbook(wb => ({ ...wb, worksheets: listWithItemReplaced(uws.id, uws, wb.worksheets) }));
     return Promise.resolve();
   }
 
   return (
     <div className='mathsie-workbook'>
-      <div className='mathsie-workbook--controls'>
-        <div className='pages'>
-          <button type="button" onClick={prevSheet}>&lt;</button>
-          <span>Page {currentSheet + 1} of {workbook.worksheets.length}</span>
-          <button type="button" onClick={nextSheet}>&gt;</button></div>
-        <div>
-          <button type="button" onClick={() => setIsMarking(s => !s)}>{isMarking ? 'Turn off' : 'Set'} marking</button></div>
-      </div>
-      <WorksheetPage uworksheet={workbook.worksheets[currentSheet]} isMarking={isMarking} id={'c' + currentSheet.toString()} 
-      onSave={updateUserWorkbook}/>
+      <PageControls currentPage={currentSheet} totalPages={workbook.worksheets.length} setPage={setCurrentSheet}
+        isMarkingMode={isMarking} setIsMarkingMode={setIsMarking} />
+      <WorksheetPage uworksheet={workbook.worksheets[currentSheet]} isMarking={isMarking} onSave={updateUserWorkbook} />
     </div>
   );
 }
 
-function WorksheetPage({ uworksheet, isMarking, id, onSave }: { uworksheet: UserWorksheet, isMarking: boolean, id: string, 
-  onSave: (uws: UserWorksheet) => Promise<any> }) {
+function PageControls({ currentPage, totalPages, setPage, isMarkingMode, setIsMarkingMode }: {
+  currentPage: number, totalPages: number,
+  setPage: (page: number) => void, isMarkingMode: boolean, setIsMarkingMode: (marking: boolean) => void
+}) {
+
+  function nextSheet() {
+    setPage(Math.min(currentPage + 1, totalPages - 1));
+  }
+
+  function prevSheet() {
+    setPage(Math.max(0, currentPage - 1));
+  }
+
+  return <div className='mathsie-workbook--controls'>
+    <div className='pages'>
+      <button type="button" onClick={prevSheet}>&lt;</button>
+      <span>Page {currentPage + 1} of {totalPages}</span>
+      <button type="button" onClick={nextSheet}>&gt;</button></div>
+    <div>
+      <button type="button" onClick={() => setIsMarkingMode(!isMarkingMode)}>{isMarkingMode ? 'Turn off' : 'Set'} marking</button></div>
+  </div>
+}
+
+function WorksheetPage({ uworksheet, isMarking, onSave }: {
+  uworksheet: UserWorksheet, isMarking: boolean, onSave: (uws: UserWorksheet) => Promise<any>
+}) {
 
   return <div className='mathsie-worksheet'>
     <div className={`equations${isMarking ? " marking" : ""}`}>
@@ -98,7 +107,7 @@ function WorksheetPage({ uworksheet, isMarking, id, onSave }: { uworksheet: User
         <div className='equals'>=</div>
       </Fragment>)}
     </div>
-    <DrawingCanvas id={id} uws={uworksheet} onSave={onSave}  />
+    <DrawingCanvas uws={uworksheet} onSave={onSave} />
   </div>
 }
 

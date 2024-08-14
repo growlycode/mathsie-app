@@ -3,12 +3,11 @@ import throttle from 'lodash.throttle';
 import { UserWorksheet } from "../core/workbook";
 
 interface DrawingCanvasProps {
-    id: string;
     uws: UserWorksheet;
     onSave: (uws: UserWorksheet) => Promise<any>;
 }
 
-export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
+export function DrawingCanvas({ uws, onSave }: DrawingCanvasProps) {
     const ref = useRef<HTMLCanvasElement>(null);
 
     function getContext() {
@@ -24,19 +23,12 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
         if (!ctx || !canvas) return;
 
         const currentBytes = canvas.toDataURL();
-
-
         if (currentBytes == uws.canvasBytes) {
-
-            console.log('Same, not redrawing');
             return;
         }
-        console.log('Loading ', uws.id, ' from ', uws.canvasBytes)
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
         if (!uws.canvasBytes) return;
-
 
         var img = new Image;
         img.width = canvas.width;
@@ -48,17 +40,24 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
         img.src = uws.canvasBytes;
 
         ctx.drawImage(img, 0, 0);
-
-
     }, [uws.canvasBytes]);
 
     useEffect(() => {
-        console.log('Processing ', uws.id)
+
         const { ctx, canvas } = getContext();
         if (!ctx || !canvas) return;
 
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth * 0.4;
+
+        // canvas.height = window.innerHeight;
+        // canvas.width = window.innerWidth * 0.4;
+
+        function fitToContainer(c: HTMLCanvasElement) {
+            c.style.width = '100%';
+            c.style.height = '100%';
+            c.width = c.offsetWidth;
+            c.height = c.offsetHeight;
+        }
+        fitToContainer(canvas);
 
         ctx.strokeStyle = 'black';
         ctx.lineJoin = 'round';
@@ -106,7 +105,7 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
             }
         }
 
-        
+
         const onMouseMove = (e: MouseEvent) => draw(getMousePos(e));
         const throttledMouseMove = throttle(onMouseMove, 30);
 
@@ -165,7 +164,7 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
             console.log('Unloading ', uws.id)
             canvas.removeEventListener('pointerdown', handlePointerDown);
             canvas.removeEventListener('mousemove', throttledMouseMove)
-            canvas.removeEventListener('mouseup', finish);  
+            canvas.removeEventListener('mouseup', finish);
             canvas.removeEventListener('mouseup', finish);
             canvas.removeEventListener('mouseout', finish);
             document.body.removeEventListener("touchstart", handleTouchStart);
@@ -176,6 +175,6 @@ export function DrawingCanvas({ id, uws, onSave }: DrawingCanvasProps) {
     }, [uws.id])
 
 
-    return <canvas id={`c${id}`} className="mathsie-canvas" ref={ref}></canvas>;
+    return <canvas className="mathsie-canvas" ref={ref}></canvas>;
 }
 
