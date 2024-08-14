@@ -16,10 +16,8 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
 
     useEffect(() => {
         if (!canvasRef.current) return;
-        
-        uws.canvasPaths?.length 
-            ? canvasRef.current!.loadPaths(uws.canvasPaths)
-            : canvasRef.current.clearCanvas();
+        canvasRef.current.resetCanvas();
+        uws.canvasPaths?.length && canvasRef.current!.loadPaths(uws.canvasPaths);
     }, [uws.canvasPaths]);
 
 
@@ -54,7 +52,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             canvasColor="transparent"
             strokeColor={penColor}
             eraserWidth={30}
-            allowOnlyPointerType="pen"
+            // allowOnlyPointerType="pen"
         />
         <div className="canvas--actions">
             <i className="fa fa-pencil"
