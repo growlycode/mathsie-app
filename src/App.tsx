@@ -56,6 +56,13 @@ function App() {
   const [isMarking, setIsMarking] = useState<boolean>(false);
 
 
+  useEffect(() => {
+    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }, [])
+
   function updateUserWorkbook(uws: UserWorksheet) {
     setWorkbook(wb => ({ ...wb, worksheets: listWithItemReplaced(uws.id, uws, wb.worksheets) }));
     return Promise.resolve();
@@ -100,45 +107,40 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
   const [debug, setDebug] = useState<string>();
 
   const ref = useRef<HTMLDivElement>(null);
-  function convertRemToPixels(rem: number) {    
+  function convertRemToPixels(rem: number) {
     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-}
+  }
   useEffect(() => {
     const div = ref.current;
     if (!div) return;
 
 
-    const padding = window.innerHeight * 0.04;
     const rect = div.getBoundingClientRect();
     const rem = convertRemToPixels(0.5);
-    console.log("0.5rem: ", rem);
-    console.log("equations height: ", rect.height);
-    console.log("equations padding: ", padding);
-
-
-    const eqPadding = parseFloat(window.getComputedStyle(div, null).getPropertyValue('padding-top'));
-    const eqInnerVH = window.innerHeight - rect.y - (2*padding);
-    const eqInnerHeight = eqInnerVH-(eqPadding*2);
+    const eqHeight = window.innerHeight - rect.y;
     const rows = uworksheet.worksheet.operations.length;
-    const height =  eqInnerHeight / rows;
-    const requiredHeight = `${height - rem}px`;
-    
-    setDebug(`screen: ${window.screen.availHeight} innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${rect.height} or ${eqInnerVH} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
+    const height = eqHeight / rows;
+    const requiredHeight = `${Math.min(50, height - rem)}px`;
+
+    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
   }, [])
 
   return <div className='mathsie-worksheet'>
-    <div style={{position: 'absolute'}}>{debug}</div>
-    <div className={`equations${isMarking ? " marking" : ""}`} ref={ref}>
-      {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
-        <div className='is-error'><input type='checkbox' /></div>
-        <div className='operand left'>{op.operandLeft}</div>
-        <div className='operator'>{op.operator.symbol}</div>
-        <div className='operand right'>{op.operandRight}</div>
-        <div className='equals'>=</div>
-      </Fragment>)}
+    <div style={{ position: 'absolute' }}>{debug}</div>
+    <div className={`equations${isMarking ? " marking" : ""}`}>
+      <div className='equations--inner' ref={ref}>
+        {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
+          <div className='is-error'><input type='checkbox' /></div>
+          <div className='operand left'>{op.operandLeft}</div>
+          <div className='operator'>{op.operator.symbol}</div>
+          <div className='operand right'>{op.operandRight}</div>
+          <div className='equals'>=</div>
+        </Fragment>
+        )}
+      </div>
     </div>
     <DrawingCanvas uws={uworksheet} onSave={onSave} />
   </div>
