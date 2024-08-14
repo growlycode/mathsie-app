@@ -12,7 +12,7 @@ interface DrawingCanvasProps {
 export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
     const [eraseMode, setEraseMode] = useState<boolean>(false);
-    const [penColor, setPenColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white': 'black')
+    const [penColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white': 'black')
 
     useEffect(() => {
         if (!canvasRef.current) return;
