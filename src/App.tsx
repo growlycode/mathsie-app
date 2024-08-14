@@ -116,7 +116,7 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
   uworksheet: UserWorksheet, isMarking: boolean, onSave: (uws: UserWorksheet) => Promise<any>
 }) {
 
-  const [debug, setDebug] = useState<string>();
+  // const [debug, setDebug] = useState<string>();
 
   const ref = useRef<HTMLDivElement>(null);
   function convertRemToPixels(rem: number) {
@@ -134,14 +134,14 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     const height = eqHeight / rows;
     const requiredHeight = `${Math.min(50, height - rem)}px`;
 
-    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight} / rows: ${rows}`);
+    // setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight} / rows: ${rows}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
   }, [uworksheet])
 
   return <div className='mathsie-worksheet'>
-    <div style={{ position: 'absolute' }}>{debug}</div>
+    {/* <div style={{ position: 'absolute' }}>{debug}</div> */}
     <div className={`equations`}>
       <div className={`equations--inner ${isMarking ? " marking" : ""}`} ref={ref}>
         {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
