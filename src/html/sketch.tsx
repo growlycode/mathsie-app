@@ -52,6 +52,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             className="mathsie-canvas"
             canvasColor="white"
             strokeColor="#000000"
+            eraserWidth={30}
         />
         <div className="canvas--actions">
             <i className="fa fa-pencil"
