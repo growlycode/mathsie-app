@@ -2,7 +2,7 @@
 import { Fragment } from 'react/jsx-runtime';
 import './App.scss';
 import { DrawingCanvas } from './html/demo';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Operator, Operation, UserWorkbook, UserWorksheet } from './core/workbook';
 import { listWithItemReplaced } from './util/array';
 
@@ -97,8 +97,21 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
   uworksheet: UserWorksheet, isMarking: boolean, onSave: (uws: UserWorksheet) => Promise<any>
 }) {
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+
+    const div = ref.current;
+    if (!div) return;
+
+    const height = div.getBoundingClientRect().height / uworksheet.worksheet.operations.length;
+
+    div.style.fontSize = `calc(${height}px - 4vh)`;
+
+  }, [])
+
   return <div className='mathsie-worksheet'>
-    <div className={`equations${isMarking ? " marking" : ""}`}>
+    <div className={`equations${isMarking ? " marking" : ""}`} ref={ref}>
       {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
         <div className='is-error'><input type='checkbox' /></div>
         <div className='operand left'>{op.operandLeft}</div>
