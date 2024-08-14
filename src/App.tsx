@@ -47,7 +47,8 @@ const uWorkbook: UserWorkbook = {
     {
       id: '12345_1',
       worksheet: { operations },
-      canvasBytes: undefined
+      canvasBytes: undefined,
+      canvasPaths: []
     },
     {
       id: '12345_2',
@@ -61,7 +62,8 @@ const uWorkbook: UserWorkbook = {
         { operandLeft: 18, operandRight: 7, operator: plus },
         { operandLeft: 19, operandRight: 7, operator: plus }]
       },
-      canvasBytes: undefined
+      canvasBytes: undefined,
+      canvasPaths: []
     }
   ]
 }
