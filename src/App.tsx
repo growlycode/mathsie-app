@@ -109,20 +109,21 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
 
 
     const padding = window.innerHeight * 0.04;
-    const eqHeight = div.getBoundingClientRect().height;
+    const rect = div.getBoundingClientRect();
     const rem = convertRemToPixels(0.5);
     console.log("0.5rem: ", rem);
-    console.log("equations height: ", eqHeight);
+    console.log("equations height: ", rect.height);
     console.log("equations padding: ", padding);
 
 
     const eqPadding = parseFloat(window.getComputedStyle(div, null).getPropertyValue('padding-top'));
-    const eqInnerHeight = eqHeight - (eqPadding*2);
+    const eqInnerHeight = rect.height - (eqPadding*2);
+    const eqInnerVH = window.innerHeight - rect.y;
     const rows = uworksheet.worksheet.operations.length;
     const height =  eqInnerHeight / rows;
     const requiredHeight = `${height - rem}px`;
     
-    setDebug(`screen: ${window.screen.availHeight} innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${eqHeight} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
+    setDebug(`screen: ${window.screen.availHeight} innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${rect.height} or ${eqInnerVH} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
