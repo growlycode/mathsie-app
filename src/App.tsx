@@ -103,7 +103,7 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     const div = ref.current;
     if (!div) return;
 
-    const padding = window.innerHeight * 0.04;
+    const padding = window.screen.height * 0.04;
     const height = (div.getBoundingClientRect().height - (padding*2)) / uworksheet.worksheet.operations.length;
     div.style.fontSize = `calc(${height}px - 4vh)`;
 
