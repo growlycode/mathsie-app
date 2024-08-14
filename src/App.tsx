@@ -117,10 +117,10 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
 
 
     const eqPadding = parseFloat(window.getComputedStyle(div, null).getPropertyValue('padding-top'));
-    const eqInnerHeight = rect.height - (eqPadding*2);
-    const eqInnerVH = window.innerHeight - rect.y;
+    const eqInnerVH = window.innerHeight - rect.y - (2*padding);
+    const eqInnerHeight = eqInnerVH-(eqPadding*2);
     const rows = uworksheet.worksheet.operations.length;
-    const height =  (eqInnerVH-(eqPadding*2)) / rows;
+    const height =  eqInnerHeight / rows;
     const requiredHeight = `${height - rem}px`;
     
     setDebug(`screen: ${window.screen.availHeight} innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${rect.height} or ${eqInnerVH} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
