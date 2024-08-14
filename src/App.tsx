@@ -98,14 +98,23 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
 }) {
 
   const ref = useRef<HTMLDivElement>(null);
-
+  function convertRemToPixels(rem: number) {    
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
   useEffect(() => {
     const div = ref.current;
     if (!div) return;
 
-    const padding = window.screen.height * 0.04;
-    const height = (div.getBoundingClientRect().height - (padding*2)) / uworksheet.worksheet.operations.length;
-    div.style.fontSize = `calc(${height}px - 4vh)`;
+    const padding = window.innerHeight * 0.04;
+    const eqHeight = div.getBoundingClientRect().height;
+    const rem = convertRemToPixels(0.5);
+    console.log("0.5rem: ", rem);
+    console.log("equations height: ", eqHeight);
+    console.log("equations padding: ", padding);
+    const height = (eqHeight - (padding*2)) / uworksheet.worksheet.operations.length;
+    const requiredHeight = `${height - rem}px`;
+    div.style.fontSize = requiredHeight;
+    div.style.lineHeight = requiredHeight;
 
   }, [])
 
