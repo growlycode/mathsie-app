@@ -120,7 +120,7 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     const eqInnerHeight = rect.height - (eqPadding*2);
     const eqInnerVH = window.innerHeight - rect.y;
     const rows = uworksheet.worksheet.operations.length;
-    const height =  eqInnerHeight / rows;
+    const height =  (eqInnerVH-(eqPadding*2)) / rows;
     const requiredHeight = `${height - rem}px`;
     
     setDebug(`screen: ${window.screen.availHeight} innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${rect.height} or ${eqInnerVH} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
