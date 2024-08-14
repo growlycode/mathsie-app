@@ -67,7 +67,7 @@ h6 {
 
 .body {
   height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
+  // height: calc(var(--vh, 1vh) * 100);
   background-color: white;
 }
 
@@ -111,12 +111,12 @@ h6 {
       padding-left: 4svh;
       padding-bottom: 4svh;
       padding-top: 4svh;
+      flex-basis: 60%;
 
       &--inner {
         display: grid;
         grid-template-columns: 1fr 0.5fr 1fr 0.5fr;
         text-align: center;
-        flex-basis: 60%;
         grid-gap: 0.5rem;
         height: 100%;
       }

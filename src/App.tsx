@@ -55,14 +55,6 @@ function App() {
   const [workbook, setWorkbook] = useState<UserWorkbook>(uWorkbook);
   const [isMarking, setIsMarking] = useState<boolean>(false);
 
-
-  useEffect(() => {
-    // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-    let vh = window.innerHeight * 0.01;
-    // Then we set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  }, [])
-
   function updateUserWorkbook(uws: UserWorksheet) {
     setWorkbook(wb => ({ ...wb, worksheets: listWithItemReplaced(uws.id, uws, wb.worksheets) }));
     return Promise.resolve();
