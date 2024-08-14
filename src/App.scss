@@ -160,9 +160,17 @@ h6 {
       }
     }
 
-    .mathsie-canvas {
+    .canvas-wrapper {
       flex-basis: 40%;
       margin-left: -10px;
+      display: flex;
+
+      .mathsie-canvas {
+        flex-grow: 1;
+      }
+      .canvas--actions {
+        width: 30px;
+      }
     }
 
   }

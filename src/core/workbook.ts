@@ -1,3 +1,5 @@
+import { CanvasPath } from "react-sketch-canvas";
+
 export interface Operator {
     symbol: string;
     func: (numLeft: number, numRight: number) => number;
@@ -28,4 +30,5 @@ export interface UserWorksheet {
     id: string;
     worksheet: Worksheet;
     canvasBytes: string | undefined;
+    canvasPaths: CanvasPath[];
 }

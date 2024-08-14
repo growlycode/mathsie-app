@@ -1,10 +1,10 @@
 
 import { Fragment } from 'react/jsx-runtime';
 import './App.scss';
-import { DrawingCanvas } from './html/demo';
 import { useEffect, useRef, useState } from 'react';
 import { Operator, Operation, UserWorkbook, UserWorksheet } from './core/workbook';
 import { listWithItemReplaced } from './util/array';
+import { SketchCanvas } from './html/sketch';
 
 
 const plus: Operator = {
@@ -152,7 +152,8 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
         )}
       </div>
     </div>
-    <DrawingCanvas uws={uworksheet} onSave={onSave} />
+        <SketchCanvas uws={uworksheet} onSave={onSave} />
+    {/* <DrawingCanvas uws={uworksheet} onSave={onSave} /> */}
   </div>
 }
 
