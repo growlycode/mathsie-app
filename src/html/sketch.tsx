@@ -12,6 +12,7 @@ interface DrawingCanvasProps {
 export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
     const [eraseMode, setEraseMode] = useState<boolean>(false);
+    const [penColor, setPenColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white': 'black')
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -50,8 +51,8 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
         <ReactSketchCanvas
             ref={canvasRef}
             className="mathsie-canvas"
-            canvasColor="white"
-            strokeColor="#000000"
+            canvasColor="transparent"
+            strokeColor={penColor}
             eraserWidth={30}
         />
         <div className="canvas--actions">
