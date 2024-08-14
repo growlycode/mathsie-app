@@ -142,8 +142,8 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
 
   return <div className='mathsie-worksheet'>
     <div style={{ position: 'absolute' }}>{debug}</div>
-    <div className={`equations${isMarking ? " marking" : ""}`}>
-      <div className='equations--inner' ref={ref}>
+    <div className={`equations`}>
+      <div className={`equations--inner ${isMarking ? " marking" : ""}`} ref={ref}>
         {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
           <div className='is-error'><input type='checkbox' /></div>
           <div className='operand left'>{op.operandLeft}</div>

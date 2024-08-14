@@ -103,6 +103,7 @@ h6 {
   .mathsie-worksheet {
     display: flex;
     height: 100%;
+    background-color: white;
 
 
     .equations {
@@ -118,6 +119,23 @@ h6 {
         text-align: center;
         grid-gap: 0.5rem;
         height: 100%;
+
+
+        &.marking {
+          grid-template-columns: auto 1fr 0.5fr 1fr auto;
+
+          .is-error {
+            display: block;
+          }
+
+
+          input[type='checkbox'] {
+            width: 2rem;
+            height: 2rem;
+            margin-left: 1rem;
+            accent-color: red;
+          }
+        }
       }
 
 
@@ -137,22 +155,6 @@ h6 {
       }
 
 
-      &.marking {
-        grid-template-columns: auto 1fr 0.5fr 1fr auto;
-        padding-left: 2vh;
-
-        .is-error {
-          display: block;
-        }
-
-
-        input[type='checkbox'] {
-          width: 2rem;
-          height: 2rem;
-          margin-left: 1rem;
-          accent-color: red;
-        }
-      }
 
       .operator,
       .equals {
@@ -167,7 +169,9 @@ h6 {
 
       .mathsie-canvas {
         flex-grow: 1;
+        border: none !important;
       }
+
       .canvas--actions {
         width: 30px;
       }
