@@ -115,12 +115,14 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     console.log("equations height: ", eqHeight);
     console.log("equations padding: ", padding);
 
-    const eqInnerHeight = eqHeight - (padding*2);
+
+    const eqPadding = parseFloat(window.getComputedStyle(div, null).getPropertyValue('padding-top'));
+    const eqInnerHeight = eqHeight - (eqPadding*2);
     const rows = uworksheet.worksheet.operations.length;
     const height =  eqInnerHeight / rows;
     const requiredHeight = `${height - rem}px`;
     
-    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
+    setDebug(`innerHeight: ${window.innerHeight} / 4vh: ${padding} / eqPadding: ${eqPadding} eqHeight: ${eqHeight} / eqInnerHeight: ${eqInnerHeight} / 0.5rem: ${rem} / rows: ${rows}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
