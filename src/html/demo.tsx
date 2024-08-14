@@ -89,7 +89,7 @@ export function DrawingCanvas({ uws, onSave }: DrawingCanvasProps) {
             }
 
             ctx.strokeStyle = isPen ? 'black' : 'white';
-            ctx.lineWidth = isPen ? 2 : 5;
+            ctx.lineWidth = isPen ? 2 : 20;
             ctx.beginPath();
             ctx.moveTo(lastX, lastY); //start from
             ctx.lineTo(x, y); //go to
