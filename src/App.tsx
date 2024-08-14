@@ -32,7 +32,15 @@ const uWorkbook: UserWorkbook = {
   workbook: {
     title: 'Adding 7',
     worksheets: [
-      { operations }, { operations }
+      { operations }, { operations: [...operations, 
+        { operandLeft: 16, operandRight: 7, operator: plus },
+        { operandLeft: 17, operandRight: 7, operator: plus },
+        { operandLeft: 18, operandRight: 7, operator: plus },
+        { operandLeft: 19, operandRight: 7, operator: plus },
+        { operandLeft: 16, operandRight: 7, operator: plus },
+        { operandLeft: 17, operandRight: 7, operator: plus },
+        { operandLeft: 18, operandRight: 7, operator: plus },
+        { operandLeft: 19, operandRight: 7, operator: plus }] }
     ]
   },
   worksheets: [
@@ -43,7 +51,16 @@ const uWorkbook: UserWorkbook = {
     },
     {
       id: '12345_2',
-      worksheet: { operations },
+      worksheet: { operations: [...operations, 
+        { operandLeft: 16, operandRight: 7, operator: plus },
+        { operandLeft: 17, operandRight: 7, operator: plus },
+        { operandLeft: 18, operandRight: 7, operator: plus },
+        { operandLeft: 19, operandRight: 7, operator: plus },
+        { operandLeft: 16, operandRight: 7, operator: plus },
+        { operandLeft: 17, operandRight: 7, operator: plus },
+        { operandLeft: 18, operandRight: 7, operator: plus },
+        { operandLeft: 19, operandRight: 7, operator: plus }]
+      },
       canvasBytes: undefined
     }
   ]
@@ -115,11 +132,11 @@ function WorksheetPage({ uworksheet, isMarking, onSave }: {
     const height = eqHeight / rows;
     const requiredHeight = `${Math.min(50, height - rem)}px`;
 
-    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight}`);
+    setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight} / rows: ${rows}`);
     div.style.fontSize = requiredHeight;
     div.style.lineHeight = requiredHeight;
 
-  }, [])
+  }, [uworksheet])
 
   return <div className='mathsie-worksheet'>
     <div style={{ position: 'absolute' }}>{debug}</div>

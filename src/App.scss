@@ -114,7 +114,7 @@ h6 {
 
       &--inner {
         display: grid;
-        grid-template-columns: 1fr 0.5fr 1fr 0.5fr;
+        grid-template-columns: 1fr 0.5fr 1fr auto;
         text-align: center;
         grid-gap: 0.5rem;
         height: 100%;
@@ -138,7 +138,7 @@ h6 {
 
 
       &.marking {
-        grid-template-columns: auto 1fr 0.5fr 1fr 0.5fr;
+        grid-template-columns: auto 1fr 0.5fr 1fr auto;
         padding-left: 2vh;
 
         .is-error {
@@ -162,7 +162,7 @@ h6 {
 
     .mathsie-canvas {
       flex-basis: 40%;
-      //border: 1px solid red;
+      margin-left: -10px;
     }
 
   }
