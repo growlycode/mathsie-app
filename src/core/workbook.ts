@@ -1,4 +1,4 @@
-import { CanvasPath } from "../canvas/types";
+import { CanvasPath } from "../views/components/canvas/types";
 
 export interface Operation {
     left: number;

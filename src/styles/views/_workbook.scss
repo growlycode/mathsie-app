@@ -4,34 +4,12 @@
     display: flex;
     flex-direction: column;
 
-    &--controls {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.5rem;
-
-        button {
-            border: 1px solid grey;
-        }
-
-        .pages {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.5rem;
-        }
-    }
-
     .mathsie-worksheet {
-        display: flex;
-        height: 100%;
 
         .equations {
 
-            padding-left: 10svh;
-            padding-bottom: 5svh;
-            padding-top: 5svh;
-            flex-basis: 60%;
+
+           // flex-basis: 60%;
             text-align: right;
 
             &--inner {
@@ -47,23 +25,7 @@
                 font-optical-sizing: auto;
                 font-weight: 400;
                 font-style: normal;
-                font-variant-numeric: tabular-nums;
-
-                &.marking {
-                    grid-template-columns: auto auto auto auto auto;
-
-                    .is-error {
-                        display: block;
-                    }
-
-
-                    input[type='checkbox'] {
-                        width: 1.5rem;
-                        height: 1.5rem;
-                        margin-left: 1rem;
-                        accent-color: red;
-                    }
-                }
+                font-variant-numeric: tabular-nums;            
             }
 
 
@@ -90,40 +52,16 @@
             }
         }
 
-        .canvas-wrapper {
-            flex-basis: 40%;
-            margin-left: -10px;
-            display: flex;
+        // .canvas-wrapper {
+        //     flex-basis: 40%;
+        //     margin-left: -10px;
+        //     display: flex;
 
-            .mathsie-canvas {
-                flex-grow: 1;
-                border: none !important;
-            }
-
-            .canvas--actions {
-
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 0.5rem;
-                font-size: x-large;
-
-                button {
-                    padding: 0.5rem;
-                    border: 1px solid lightgrey;
-                    display: flex;
-                    justify-content: center;
-                    border-radius: 15px;
-
-                    i {
-                        letter-spacing: 1px;
-                        min-height: 30px;
-                        min-width: 30px;
-                    }
-                }
-
-            }
-        }
+        //     .mathsie-canvas {
+        //         flex-grow: 1;
+        //         border: none !important;
+        //     }
+        // }
 
     }
 }

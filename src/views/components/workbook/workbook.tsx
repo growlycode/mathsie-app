@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { UserWorksheet } from "../../../core/workbook";
 import { listWithItemReplaced } from "../../../util/array";
 import { WorksheetPage } from "../worksheet/worksheet";
@@ -8,7 +8,6 @@ import useWorkbookStore from "../../../store/workbookStore";
 export function WorkbookPage() {
 
     const { workbook, currentPage, setPage, fetchWorkbookForUser, saveWorkbook } = useWorkbookStore();
-    const [isMarking, setIsMarking] = useState<boolean>(false);
     
     
     useEffect(() => {
@@ -24,9 +23,8 @@ export function WorkbookPage() {
   
     return (
       <div className='mathsie-workbook'>
-        <PageControls currentPage={currentPage} totalPages={workbook.worksheets.length} setPage={setPage}
-          isMarkingMode={isMarking} setIsMarkingMode={setIsMarking} />
-        <WorksheetPage uworksheet={workbook.worksheets[currentPage]} isMarking={isMarking} onSave={updateUserWorkbook} />
+        <PageControls currentPage={currentPage} totalPages={workbook.worksheets.length} setPage={setPage} />
+        <WorksheetPage uworksheet={workbook.worksheets[currentPage]} onSave={updateUserWorkbook} />
       </div>
     );
   }

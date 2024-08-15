@@ -1,13 +1,11 @@
 import { useRef, useEffect } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { SketchCanvas } from "../../../canvas/sketch";
+import { SketchCanvas } from "../canvas/sketch";
 import { UserWorksheet, Operation } from "../../../core/workbook";
 
-export function WorksheetPage({ uworksheet, isMarking, onSave }: {
-    uworksheet: UserWorksheet, isMarking: boolean, onSave: (uws: UserWorksheet) => Promise<any>
+export function WorksheetPage({ uworksheet, onSave }: {
+    uworksheet: UserWorksheet, onSave: (uws: UserWorksheet) => Promise<any>
 }) {
-
-    // const [debug, setDebug] = useState<string>();
 
     const ref = useRef<HTMLDivElement>(null);
     function convertRemToPixels(rem: number) {
@@ -25,22 +23,19 @@ export function WorksheetPage({ uworksheet, isMarking, onSave }: {
         const height = eqHeight / rows;
         const requiredHeight = `${Math.min(50, height - rem)}px`;
 
-        // setDebug(`innerHeight: ${window.innerHeight} / eqHeight: ${eqHeight} / font-size: ${requiredHeight} / rows: ${rows}`);
         div.style.fontSize = requiredHeight;
         div.style.lineHeight = requiredHeight;
 
     }, [uworksheet])
 
-    return <div className='mathsie-worksheet'>
-        {/* <div style={{ position: 'absolute' }}>{debug}</div> */}
-        <div className={`equations`}>
-            <div className={`equations--inner ${isMarking ? " marking" : ""}`} ref={ref}>
+    return <div className='mathsie-worksheet flex h-full'>
+        <div className={`equations p-[5svh] pl-[10svh] pr-0 basis-3/5`}>
+            <div className={`equations--inner `} ref={ref}>
                 {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
-                    <div className='is-error'><input type='checkbox' /></div>
-                    <div className='operand left'>{op.left}</div>
-                    <div className='operator'>{op.symbol}</div>
-                    <div className='operand right'>{op.right}</div>
-                    <div className='equals'>=</div>
+                    <div className='select-none'>{op.left}</div>
+                    <div className='select-none'>{op.symbol}</div>
+                    <div className='select-none'>{op.right}</div>
+                    <div className='select-none'>=</div>
                 </Fragment>
                 )}
             </div>

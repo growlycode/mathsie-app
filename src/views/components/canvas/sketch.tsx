@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { UserWorksheet } from "../core/workbook";
+import { UserWorksheet } from "../../../core/workbook";
 import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
 import { CanvasPath } from "./types";
+import { IconButton } from "../buttons/icon-button";
 
 interface DrawingCanvasProps {
     uws: UserWorksheet;
@@ -9,7 +10,6 @@ interface DrawingCanvasProps {
 }
 export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
-    const [eraseMode, setEraseMode] = useState<boolean>(false);
     const [penColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black')
 
     useEffect(() => {
@@ -19,12 +19,10 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     }, [uws.paths]);
 
     const handleEraserClick = () => {
-        setEraseMode(true);
         canvasRef.current?.eraseMode(true);
     };
 
     const handlePenClick = () => {
-        setEraseMode(false);
         canvasRef.current?.eraseMode(false);
     };
 
@@ -45,38 +43,24 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             .then(savePaths);
     }
 
-    return <div className="canvas-wrapper">
+    return <>
         <MReactSketchCanvas
             ref={canvasRef}
-            className="mathsie-canvas"
+            className="mathsie-canvas !border-none -ml-4"
             canvasColor="transparent"
             strokeColor={penColor}
             eraserWidth={30}
             eraserPen="touch"
             onPointerUp={save}
         />
-        <div className="canvas--actions">
-            <button type="button" onClick={handlePenClick}>
-                <i className="fa fa-pencil"
-                    data-disabled={!eraseMode}
-                />
-            </button>
-            <button type="button" onClick={handleEraserClick}>
-                <i className="fa fa-eraser"
-                    data-disabled={eraseMode}
-                />
-            </button>
-            <div className="hr" />
-            <button type="button" onClick={handleUndoClick}>
-                <i className="fa fa-rotate-left" />
-            </button>
-            <button type="button" onClick={handleRedoClick}>
-                <i className="fa fa-rotate-right" />
-            </button>
-
-            <button type="button" onClick={save}>
-                <i className="fa fa-save" />
-            </button>
+        <div className="flex flex-col gap-2 justify-center p-2 min-w-min">
+            <IconButton onClick={handlePenClick} faClass="pencil" />
+            <IconButton onClick={handleEraserClick} faClass="eraser" />
+            <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+            <IconButton onClick={handleUndoClick} faClass="rotate-left" />
+            <IconButton onClick={handleRedoClick} faClass="rotate-right" />
+            <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+            <IconButton onClick={save} faClass="save" />
         </div>
-    </div>
+    </>
 }
