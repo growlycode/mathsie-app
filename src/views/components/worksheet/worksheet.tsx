@@ -19,7 +19,7 @@ export function WorksheetPage({ uworksheet, isMarking, onSave }: {
 
 
         const rect = div.getBoundingClientRect();
-        const rem = convertRemToPixels(0.5);
+        const rem = convertRemToPixels(1.5);
         const eqHeight = window.innerHeight - rect.y;
         const rows = uworksheet.worksheet.operations.length;
         const height = eqHeight / rows;

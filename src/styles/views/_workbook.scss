@@ -28,18 +28,20 @@
 
         .equations {
 
-            padding-left: 5svh;
+            padding-left: 10svh;
             padding-bottom: 5svh;
             padding-top: 5svh;
             flex-basis: 60%;
+            text-align: right;
 
             &--inner {
-                display: grid;
-                grid-template-columns: 1fr 0.5fr 1fr auto;
+                display: inline-grid;
+                grid-template-columns: auto auto auto auto;
                 text-align: center;
-                grid-gap: 0.5rem;
+                grid-gap: 1.5rem;
                 height: 100%;
 
+                text-align: right;
 
                 &.marking {
                     grid-template-columns: auto 1fr 0.5fr 1fr auto;
