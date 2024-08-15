@@ -10,7 +10,7 @@ interface DrawingCanvasProps {
 export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
     const [eraseMode, setEraseMode] = useState<boolean>(false);
-    const [penColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white': 'black')
+    const [penColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black')
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -41,9 +41,9 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     }
 
     const save = () => {
-         canvasRef.current && canvasRef.current.exportPaths()
-             .then(savePaths);
-     }
+        canvasRef.current && canvasRef.current.exportPaths()
+            .then(savePaths);
+    }
 
     return <div className="canvas-wrapper">
         <MReactSketchCanvas
@@ -56,24 +56,27 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             onPointerUp={save}
         />
         <div className="canvas--actions">
-            <i className="fa fa-pencil"
-                data-disabled={!eraseMode}
-                onClick={handlePenClick}
-            />
-            <i className="fa fa-eraser"
-                data-disabled={eraseMode}
-                onClick={handleEraserClick}
-            />
-            <div className="vr" />
-            <i className="fa fa-rotate-left"
-                onClick={handleUndoClick}
-            />
-            <i className="fa fa-rotate-right"
-                onClick={handleRedoClick}
-            />            
-            <i className="fa fa-save"
-            onClick={save}
-        />
+            <button type="button" onClick={handlePenClick}>
+                <i className="fa fa-pencil"
+                    data-disabled={!eraseMode}
+                />
+            </button>
+            <button type="button" onClick={handleEraserClick}>
+                <i className="fa fa-eraser"
+                    data-disabled={eraseMode}
+                />
+            </button>
+            <div className="hr" />
+            <button type="button" onClick={handleUndoClick}>
+                <i className="fa fa-rotate-left" />
+            </button>
+            <button type="button" onClick={handleRedoClick}>
+                <i className="fa fa-rotate-right" />
+            </button>
+
+            <button type="button" onClick={save}>
+                <i className="fa fa-save" />
+            </button>
         </div>
     </div>
 }

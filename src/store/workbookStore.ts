@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { UserWorkbook } from "../core/workbook";
+import { workbookService } from "../api/workbookService";
 
 interface WorkbookStore {
     workbooks: UserWorkbook[];
@@ -38,9 +39,8 @@ const useWorkbookStore = create<WorkbookStore>((set) => ({
     fetchWorkbookForUser: async () => {
         set((state: WorkbookStore) => ({ ...state, loading: true }))
         try {
-            const res = await fetch("api/workbook/FB65E469-C2D0-450D-A616-C4479CAF93A7")
-            const workbook: UserWorkbook = await res.json()
-            set(s => ({ ...s, error: "", workbook, currentPage: 0, worksheet: workbook.worksheets[0] }))
+            const workbook = await workbookService.getWorkbook();
+            set(s => ({ ...s, error: undefined, workbook, currentPage: 0, worksheet: workbook.worksheets[0] }))
         } catch (error: any) {
             set(s => ({ ...s, error: error.message }))
         } finally {

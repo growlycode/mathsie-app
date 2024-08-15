@@ -1,15 +1,29 @@
 
 import './App.scss';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import 'react-toastify/dist/ReactToastify.css';
 import { WorkbookPage } from './views/components/workbook/workbook';
+import { ToastContainer } from 'react-toastify';
 
-const queryClient = new QueryClient();
+
 
 
 function App() {
-  return (<QueryClientProvider client={queryClient}>
+  return (<div>
+    
     <WorkbookPage />
-  </QueryClientProvider>
+    <ToastContainer
+            position="bottom-right"
+            autoClose={2000}
+            theme='colored'
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+        />
+  </div>
   );
 }
 

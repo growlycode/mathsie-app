@@ -1,0 +1,116 @@
+.mathsie-workbook {
+    border: 1px solid grey;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+
+    &--controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem;
+
+        button {
+            border: 1px solid grey;
+        }
+
+        .pages {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+        }
+    }
+
+    .mathsie-worksheet {
+        display: flex;
+        height: 100%;
+
+        .equations {
+
+            padding-left: 5svh;
+            padding-bottom: 5svh;
+            padding-top: 5svh;
+            flex-basis: 60%;
+
+            &--inner {
+                display: grid;
+                grid-template-columns: 1fr 0.5fr 1fr auto;
+                text-align: center;
+                grid-gap: 0.5rem;
+                height: 100%;
+
+
+                &.marking {
+                    grid-template-columns: auto 1fr 0.5fr 1fr auto;
+
+                    .is-error {
+                        display: block;
+                    }
+
+
+                    input[type='checkbox'] {
+                        width: 2rem;
+                        height: 2rem;
+                        margin-left: 1rem;
+                        accent-color: red;
+                    }
+                }
+            }
+
+
+            .operand,
+            .operator,
+            .equals {
+                -webkit-user-select: none;
+                /* Safari */
+                -ms-user-select: none;
+                /* IE 10 and IE 11 */
+                user-select: none;
+                /* Standard syntax */
+            }
+
+            .is-error {
+                display: none;
+            }
+
+
+
+            .operator,
+            .equals {
+                text-align: center;
+            }
+        }
+
+        .canvas-wrapper {
+            flex-basis: 40%;
+            margin-left: -10px;
+            display: flex;
+
+            .mathsie-canvas {
+                flex-grow: 1;
+                border: none !important;
+            }
+
+            .canvas--actions {
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 0.5rem;
+                font-size: x-large;
+
+                button {
+                    padding: 0.5rem;
+                    border: 1px solid lightgrey;
+                    display: flex;
+                    justify-content: center;
+                    border-radius: 15px;
+
+                }
+
+            }
+        }
+
+    }
+}
