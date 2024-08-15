@@ -43,6 +43,11 @@
 
                 text-align: right;
 
+                font-family: "Inter Tight", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+
                 &.marking {
                     grid-template-columns: auto 1fr 0.5fr 1fr auto;
 
