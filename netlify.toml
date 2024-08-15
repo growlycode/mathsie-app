@@ -1,5 +1,5 @@
 [[redirects]]
   force = true
-  from = "/api"
+  from = "/api/*"
   status = 200
-  to = "https://mathsie.azurewebsites.net/api"
+  to = "https://mathsie.azurewebsites.net/api/:splat"
