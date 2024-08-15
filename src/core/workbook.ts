@@ -1,14 +1,9 @@
 import { CanvasPath } from "../canvas/types";
 
-export interface Operator {
-    symbol: string;
-    func: (numLeft: number, numRight: number) => number;
-}
-
 export interface Operation {
-    operandLeft: number;
-    operandRight: number;
-    operator: Operator;
+    left: number;
+    right: number;
+    symbol: string;
 }
 
 export interface Worksheet {
@@ -29,6 +24,6 @@ export interface UserWorkbook {
 export interface UserWorksheet {
     id: string;
     worksheet: Worksheet;
-    canvasBytes: string | undefined;
-    canvasPaths: CanvasPath[];
+    svg: string | undefined;
+    paths: CanvasPath[];
 }

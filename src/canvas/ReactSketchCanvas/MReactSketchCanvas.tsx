@@ -18,6 +18,7 @@ export interface MReactSketchCanvasProps
   eraserWidth?: number;
   onChange?: (updatedPaths: CanvasPath[]) => void;
   onStroke?: (path: CanvasPath, isEraser: boolean) => void;
+  onPointerUp?: () => void;
   strokeColor?: string;
   strokeWidth?: number;
   withTimestamp?: boolean;
@@ -63,7 +64,8 @@ export const MReactSketchCanvas = React.forwardRef<
     withTimestamp = false,
     withViewBox = false,
     readOnly = false,
-    eraserPen
+    eraserPen,
+    onPointerUp
   } = props;
 
   const svgCanvas = React.createRef<CanvasRef>();
@@ -86,6 +88,7 @@ export const MReactSketchCanvas = React.forwardRef<
 
   React.useEffect(() => {
     liftStrokeUp();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawing]);
 
@@ -231,6 +234,8 @@ export const MReactSketchCanvas = React.forwardRef<
 
     setIsDrawing(false);
 
+    
+    isDrawing && onPointerUp && onPointerUp();
     if (!withTimestamp) {
       return;
     }
@@ -246,7 +251,8 @@ export const MReactSketchCanvas = React.forwardRef<
       endTimestamp: Date.now(),
     };
 
-    setCurrentPaths((paths) => [...paths.slice(0, -1), updatedStroke]);
+    setCurrentPaths(paths => [...paths.slice(0, -1), updatedStroke]);
+
   };
 
   return (

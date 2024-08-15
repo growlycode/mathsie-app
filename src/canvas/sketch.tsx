@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { UserWorksheet } from "../core/workbook";
 import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
+import { CanvasPath } from "./types";
 
 interface DrawingCanvasProps {
     uws: UserWorksheet;
@@ -14,9 +15,8 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     useEffect(() => {
         if (!canvasRef.current) return;
         canvasRef.current.resetCanvas();
-        uws.canvasPaths?.length && canvasRef.current!.loadPaths(uws.canvasPaths);
-    }, [uws.canvasPaths]);
-
+        uws.paths?.length && canvasRef.current!.loadPaths(uws.paths);
+    }, [uws.paths]);
 
     const handleEraserClick = () => {
         setEraseMode(true);
@@ -36,11 +36,14 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
         canvasRef.current?.redo();
     };
 
-    const save = () => {
-
-        canvasRef.current && canvasRef.current.exportPaths()
-            .then(canvasPaths => onSave({ ...uws, canvasPaths }));
+    const savePaths = (paths: CanvasPath[]) => {
+        onSave({ ...uws, paths });
     }
+
+    const save = () => {
+         canvasRef.current && canvasRef.current.exportPaths()
+             .then(savePaths);
+     }
 
     return <div className="canvas-wrapper">
         <MReactSketchCanvas
@@ -50,6 +53,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             strokeColor={penColor}
             eraserWidth={30}
             eraserPen="touch"
+            onPointerUp={save}
         />
         <div className="canvas--actions">
             <i className="fa fa-pencil"
@@ -68,7 +72,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
                 onClick={handleRedoClick}
             />            
             <i className="fa fa-save"
-            onClick={() => save()}
+            onClick={save}
         />
         </div>
     </div>
