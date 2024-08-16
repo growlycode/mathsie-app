@@ -8,9 +8,9 @@ export function WorksheetPage({ uworksheet, onSave }: {
 }) {
 
     const ref = useRef<HTMLDivElement>(null);
-    function convertRemToPixels(rem: number) {
-        return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-    }
+    // function convertRemToPixels(rem: number) {
+    //     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    // }
     useEffect(() => {
         const div = ref.current;
         if (!div) return;
@@ -18,7 +18,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
 
         const rect = div.getBoundingClientRect();
         const gap = parseFloat(getComputedStyle(div).gap);
-        const rem = convertRemToPixels(gap);
+        //const rem = convertRemToPixels(gap);
         const eqHeight = window.innerHeight - rect.y;
         const rows = uworksheet.worksheet.operations.length;
         const height = eqHeight / rows;
