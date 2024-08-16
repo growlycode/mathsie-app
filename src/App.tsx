@@ -13,10 +13,10 @@ import { AuthenticationGuard } from './views/routing/AuthenticationGuard';
 
 function App() {
   const { getAccessTokenSilently, logout, isLoading } = useAuth0();
-  const secure = false;//!Env.isDevelopment;
+  const secure = !Env.isDevelopment;
   
   useEffect(() => {
-    secure && httpService.addAccessTokenInterceptor(logout, getAccessTokenSilently);
+    secure && httpService.addAccessTokenInterceptor(getAccessTokenSilently);
 }, [getAccessTokenSilently, secure]);
 
 
