@@ -51,6 +51,7 @@ const handleSuccessToast = (toasts: Toasts | undefined, data: any) => {
 class HttpService {
 
     cache = new Map<string, any>();
+    bearerTokenInterceptorAdded: boolean = false;
 
     clearCache(url: string) {
         this.cache.delete(url);
@@ -73,14 +74,26 @@ class HttpService {
         return `${apiBase}${url}`;
     }
 
-    addAccessTokenInterceptor = (getAccessTokenSilently: () => Promise<any>) => {
+    addAccessTokenInterceptor = (getAccessTokenSilently: () => Promise<any>, loginWithRedirect: () => Promise<void>) => {
+        if (this.bearerTokenInterceptorAdded) return;
         axios.interceptors.request.use(async (config) => {
+
+            const controller = new AbortController();
             try {
                 const token = await getAccessTokenSilently();
                 config.headers.Authorization = `Bearer ${token}`;
-            } catch {}
+            } catch (err: any) {
+                if (err.error === 'login_required') {
+                    loginWithRedirect();
+                }
+                else if (err.error === 'consent_required') {
+                    loginWithRedirect();
+                }
+                controller.abort();
+            }
             return config;
         });
+        this.bearerTokenInterceptorAdded = true;
     };
 
     add401LogoutInterceptor = (logout: () => Promise<any>) => {

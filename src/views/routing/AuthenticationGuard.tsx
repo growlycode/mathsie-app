@@ -1,10 +1,9 @@
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-
-const Authenticating = <div>Authenticating</div>;
+import { SubtleLoader } from "../components/site/loading";
 
 export const AuthenticationGuard = ({ component }: any) => {
   const Component = withAuthenticationRequired(component, {
-    onRedirecting: () => Authenticating
+    onRedirecting: () => <SubtleLoader />
   });
 
   return <Component />;

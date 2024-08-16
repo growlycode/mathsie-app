@@ -16,7 +16,7 @@ interface ButtonProps extends PropsWithChildren {
 
 export const Button = ({ className, children, onClick }: ButtonProps) => {
 
-    return <button type="button" onClick={onClick} className={`${prependStyle(className)}flex justify-center items-center p-4 rounded-lg bg-gray-200 border-none hover:bg-red-400`}>
+    return <button type="button" onClick={onClick} className={`${prependStyle(className)}flex justify-center items-center p-4 rounded-lg bg-gray-200 border-none dark:bg-red-600 hover:bg-red-400`}>
         {children}
     </button>
 }

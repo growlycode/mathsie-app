@@ -42,7 +42,7 @@ const useWorkbookStore = create<WorkbookStore>((set) => ({
             const workbook = await workbookService.getWorkbook();
             set(s => ({ ...s, error: undefined, workbook, currentPage: 0, worksheet: workbook.worksheets[0] }))
         } catch (error: any) {
-            set(s => ({ ...s, error: error.message }))
+            set(s => ({ ...s, error: error.message, loading: false }))
         } finally {
             set(s => ({ ...s, loading: false }))
         }

@@ -1,7 +1,7 @@
-import { Operation, UserWorkbook } from "../core/workbook";
+import { Equation, UserWorkbook } from "../core/workbook";
 
 
-  const operations: Operation[] = [
+  const operations: Equation[] = [
     { left: 10, right: 7, symbol: '+' },
     { left: 11, right: 7, symbol: '+' },
     { left: 12, right: 7, symbol: '+' },

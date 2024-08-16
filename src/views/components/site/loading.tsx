@@ -1,3 +1,8 @@
+
+export const SubtleLoader = () => {
+    return <div>Loading...</div>
+}
+
 const AppLoading = ({ text }: { text?: string }) => {
 
     return (<div className={`flex`}>

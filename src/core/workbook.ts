@@ -1,29 +1,21 @@
 import { CanvasPath } from "../views/components/canvas/types";
 
-export interface Operation {
+export interface Equation {
     left: number;
     right: number;
     symbol: string;
 }
 
-export interface Worksheet {
-    operations: Operation[];
-}
-
-export interface Workbook {
-    title: string;
-    worksheets: Worksheet[];
-}
-
 export interface UserWorkbook {
     id: string;
-    workbook: Workbook;
     worksheets: UserWorksheet[];
+    hasCorrections: boolean;
 }
 
 export interface UserWorksheet {
     id: string;
-    worksheet: Worksheet;
+    
+    equations: Equation[];
     svg: string | undefined;
     paths: CanvasPath[];
 }

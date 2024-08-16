@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { SketchCanvas } from "../canvas/sketch";
-import { UserWorksheet, Operation } from "../../../core/workbook";
+import { UserWorksheet, Equation } from "../../../core/workbook";
 
 export function WorksheetPage({ uworksheet, onSave }: {
     uworksheet: UserWorksheet, onSave: (uws: UserWorksheet) => Promise<any>
@@ -20,7 +20,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
         const gap = parseFloat(getComputedStyle(div).gap);
         //const rem = convertRemToPixels(gap);
         const eqHeight = window.innerHeight - rect.y;
-        const rows = uworksheet.worksheet.operations.length;
+        const rows = uworksheet.equations.length;
         const height = eqHeight / rows;
         const requiredHeight = `${Math.min(50, height - gap)}px`;
 
@@ -32,7 +32,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
     return <div className='mathsie-worksheet flex h-full'>
         <div className={`equations p-[5svh] md:pl-[10svh] pr-0 basis-full`}>
             <div className={`equations--inner `} ref={ref}>
-                {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
+                {uworksheet.equations.map((op: Equation, idx: number) => <Fragment key={`o-${idx}`}>
                     <div className='select-none'>{op.left}</div>
                     <div className='select-none'>{op.symbol}</div>
                     <div className='select-none'>{op.right}</div>

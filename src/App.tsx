@@ -6,19 +6,18 @@ import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Suspense, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import AppLoading from './views/components/site/loading';
+import AppLoading, { SubtleLoader } from './views/components/site/loading';
 import httpService from './infrastructure/http/httpService';
 import { Env } from './infrastructure/env/env';
 import { AuthenticationGuard } from './views/routing/AuthenticationGuard';
 
 function App() {
-  const { getAccessTokenSilently, logout, isLoading } = useAuth0();
+  const { getAccessTokenSilently, loginWithRedirect, logout, isLoading } = useAuth0();
   const secure = !Env.isDevelopment;
   
   useEffect(() => {
-    secure && httpService.addAccessTokenInterceptor(getAccessTokenSilently);
+    secure && httpService.addAccessTokenInterceptor(getAccessTokenSilently, loginWithRedirect);
 }, [getAccessTokenSilently, secure]);
-
 
 useEffect(() => {
     secure && httpService.add401LogoutInterceptor(logout);
@@ -28,7 +27,7 @@ useEffect(() => {
     <BrowserRouter>
     <Suspense fallback={<AppLoading />}>
                 {(secure && isLoading)
-                    ? <div />
+                    ? <SubtleLoader />
                     : <Routes>
                         {Env.isDevelopment
                             ? <Route path="/*" element={<WorkbookPage />} />

@@ -1,4 +1,5 @@
 {
     "domain": "dev-q9czey06.au.auth0.com",
-    "clientId": "hFXXaxLNrvBLhJVfpOkixIILwNfzuZiX"
+    "clientId": "hFXXaxLNrvBLhJVfpOkixIILwNfzuZiX",
+    "audience": "https://mathsie.azurewebsites.net"
 }
