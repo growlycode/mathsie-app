@@ -17,11 +17,12 @@ export function WorksheetPage({ uworksheet, onSave }: {
 
 
         const rect = div.getBoundingClientRect();
-        const rem = convertRemToPixels(1.5);
+        const gap = parseFloat(getComputedStyle(div).gap);
+        const rem = convertRemToPixels(gap);
         const eqHeight = window.innerHeight - rect.y;
         const rows = uworksheet.worksheet.operations.length;
         const height = eqHeight / rows;
-        const requiredHeight = `${Math.min(50, height - rem)}px`;
+        const requiredHeight = `${Math.min(50, height - gap)}px`;
 
         div.style.fontSize = requiredHeight;
         div.style.lineHeight = requiredHeight;
@@ -29,7 +30,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
     }, [uworksheet])
 
     return <div className='mathsie-worksheet flex h-full'>
-        <div className={`equations p-[5svh] pl-[10svh] pr-0 basis-3/5`}>
+        <div className={`equations p-[5svh] md:pl-[10svh] pr-0 basis-full`}>
             <div className={`equations--inner `} ref={ref}>
                 {uworksheet.worksheet.operations.map((op: Operation, idx: number) => <Fragment key={`o-${idx}`}>
                     <div className='select-none'>{op.left}</div>
