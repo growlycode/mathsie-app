@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { UserWorksheet } from "../../../core/workbook";
-import { listWithItemReplaced } from "../../../util/array";
+import { listWithItemReplaced } from "../../../infrastructure/util/array";
 import { WorksheetPage } from "../worksheet/worksheet";
 import { PageControls } from "./controls";
 import useWorkbookStore from "../../../store/workbookStore";

@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react"
-import { prependStyle } from "../../../util/css"
+import { prependStyle } from "../../../infrastructure/util/css"
 
 export const IconButton = ({ faClass, text, onClick }: { faClass: string, text?: string, onClick: () => void }) => {
 

@@ -53,7 +53,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             eraserPen="touch"
             onPointerUp={save}
         />
-        <div className="flex flex-col gap-2 justify-center p-2 min-w-min">
+        <div className="absolute right-0 h-full flex flex-col gap-2 justify-center p-2 min-w-min">
             <IconButton onClick={handlePenClick} faClass="pencil" />
             <IconButton onClick={handleEraserClick} faClass="eraser" />
             <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />

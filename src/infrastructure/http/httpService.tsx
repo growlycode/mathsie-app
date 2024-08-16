@@ -73,11 +73,18 @@ class HttpService {
         return `${apiBase}${url}`;
     }
 
-    addAccessTokenInterceptor = (getAccessTokenSilently: () => Promise<any>) => {
+    addAccessTokenInterceptor = (logout: () => Promise<any>, getAccessTokenSilently: () => Promise<any>) => {
         axios.interceptors.request.use(async (config) => {
-            const token = await getAccessTokenSilently();
-            config.headers.Authorization = `Bearer ${token}`;
-            return config;
+            try {
+
+                const token = await getAccessTokenSilently();
+                config.headers.Authorization = `Bearer ${token}`;
+
+                return config;
+            } 
+            catch (err) {
+                return logout();
+            }
         });
     };
 
