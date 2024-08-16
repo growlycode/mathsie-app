@@ -1,13 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "../buttons/icon-button";
+import { IconButton } from "../buttons/icon-button";
 
 const LogoutButton = () => {
-  const { logout } = useAuth0();
-
-  return (
-    <Button className="py-2" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-      Log out
-    </Button>
+  const { logout, isAuthenticated, user } = useAuth0();
+  
+  return (isAuthenticated && <IconButton faClass="arrow-right-from-bracket fa-solid" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} />
   );
 };
 
