@@ -3,7 +3,7 @@ import { UserWorksheet } from "../../../core/workbook";
 import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
 import { CanvasPath } from "./types";
 import { IconButton } from "../buttons/icon-button";
-import { appendStyle } from "../../../infrastructure/util/css";
+import { prependStyle } from "../../../infrastructure/util/css";
 
 interface DrawingCanvasProps {
     uws: UserWorksheet;
@@ -50,16 +50,18 @@ export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => 
             .then(savePaths);
     }
 
-    return <>
-        <MReactSketchCanvas
-            ref={canvasRef}
-            className={`mathsie-canvas !border-none -ml-4${appendStyle(className)}`}
-            canvasColor="transparent"
-            strokeColor={penColor}
-            eraserWidth={30}
-            eraserPen="touch"
-            onPointerUp={save}
-        />
+    return <div className={`${prependStyle(className)}`}>
+        <div className="h-full w-full absolute">
+            <MReactSketchCanvas
+                ref={canvasRef}
+                className={`mathsie-canvas !border-none -ml-4`}
+                canvasColor="transparent"
+                strokeColor={penColor}
+                eraserWidth={30}
+                eraserPen="touch"
+                onPointerUp={save}
+            />
+        </div>
         <div className="absolute right-0 h-full flex flex-col gap-2 justify-center p-2 min-w-min">
             <IconButton onClick={handlePenClick} faClass="pencil" />
             <IconButton onClick={handleEraserClick} faClass="eraser" />
@@ -70,5 +72,5 @@ export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => 
             {/* <IconButton onClick={save} faClass="save" /> */}
             <IconButton onClick={handleClearClick} faClass="trash" />
         </div>
-    </>
+    </div>
 }

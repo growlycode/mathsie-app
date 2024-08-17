@@ -38,6 +38,6 @@ export function WorksheetPage({ uworksheet, onSave }: {
                 )}
             </div>
         </div>
-        <SketchCanvas uws={uworksheet} onSave={onSave} />
+        <SketchCanvas className="basis-1/2" uws={uworksheet} onSave={onSave} />
     </div>
 }
