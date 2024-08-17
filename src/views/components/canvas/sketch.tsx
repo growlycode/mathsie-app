@@ -3,12 +3,14 @@ import { UserWorksheet } from "../../../core/workbook";
 import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
 import { CanvasPath } from "./types";
 import { IconButton } from "../buttons/icon-button";
+import { appendStyle } from "../../../infrastructure/util/css";
 
 interface DrawingCanvasProps {
     uws: UserWorksheet;
+    className?: string;
     onSave: (uws: UserWorksheet) => Promise<any>;
 }
-export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
+export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => {
     const canvasRef = useRef<ReactSketchCanvasRef>(null);
     const [penColor] = useState<string>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'white' : 'black')
 
@@ -34,6 +36,11 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
         canvasRef.current?.redo();
     };
 
+    const handleClearClick = () => {
+        canvasRef.current?.clearCanvas();
+    };
+
+
     const savePaths = (paths: CanvasPath[]) => {
         onSave({ ...uws, paths });
     }
@@ -46,7 +53,7 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
     return <>
         <MReactSketchCanvas
             ref={canvasRef}
-            className="mathsie-canvas !border-none -ml-4"
+            className={`mathsie-canvas !border-none -ml-4${appendStyle(className)}`}
             canvasColor="transparent"
             strokeColor={penColor}
             eraserWidth={30}
@@ -59,8 +66,9 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
             <IconButton onClick={handleUndoClick} faClass="rotate-left" />
             <IconButton onClick={handleRedoClick} faClass="rotate-right" />
-            {/* <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
-            <IconButton onClick={save} faClass="save" /> */}
+            <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+            {/* <IconButton onClick={save} faClass="save" /> */}
+            <IconButton onClick={handleClearClick} faClass="trash" />
         </div>
     </>
 }
