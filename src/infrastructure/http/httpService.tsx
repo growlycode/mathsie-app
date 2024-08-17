@@ -52,6 +52,8 @@ class HttpService {
 
     cache = new Map<string, any>();
     bearerTokenInterceptorAdded: boolean = false;
+    logout401InterceptorAdded: boolean = false;
+
 
     clearCache(url: string) {
         this.cache.delete(url);
@@ -97,6 +99,7 @@ class HttpService {
     };
 
     add401LogoutInterceptor = (logout: () => Promise<any>) => {
+        if (this.logout401InterceptorAdded) return;
         axios.interceptors.response.use(
             res => res,
             err => {
@@ -105,6 +108,7 @@ class HttpService {
                 }
                 return Promise.reject(err);
             });
+        this.logout401InterceptorAdded = true;
     }
 
     async get(url: string, toasts?: Toasts, extraAttributes: any = {}) {

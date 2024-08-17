@@ -8,9 +8,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
 }) {
 
     const ref = useRef<HTMLDivElement>(null);
-    // function convertRemToPixels(rem: number) {
-    //     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-    // }
+
     useEffect(() => {
         const div = ref.current;
         if (!div) return;
@@ -18,7 +16,6 @@ export function WorksheetPage({ uworksheet, onSave }: {
 
         const rect = div.getBoundingClientRect();
         const gap = parseFloat(getComputedStyle(div).gap);
-        //const rem = convertRemToPixels(gap);
         const eqHeight = window.innerHeight - rect.y;
         const rows = uworksheet.equations.length;
         const height = eqHeight / rows;
@@ -33,10 +30,10 @@ export function WorksheetPage({ uworksheet, onSave }: {
         <div className={`equations p-[5svh] md:pl-[10svh] pr-0 basis-full`}>
             <div className={`equations--inner `} ref={ref}>
                 {uworksheet.equations.map((op: Equation, idx: number) => <Fragment key={`o-${idx}`}>
-                    <div className='select-none'>{op.left}</div>
-                    <div className='select-none'>{op.symbol}</div>
-                    <div className='select-none'>{op.right}</div>
-                    <div className='select-none'>=</div>
+                    <div className='select-none overflow-x-visible'>{op.left}</div>
+                    <div className='select-none overflow-x-visible'>{op.symbol}</div>
+                    <div className='select-none overflow-x-visible'>{op.right}</div>
+                    <div className='select-none overflow-x-visible'>=</div>
                 </Fragment>
                 )}
             </div>

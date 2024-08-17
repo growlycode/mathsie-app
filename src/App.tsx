@@ -4,9 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { WorkbookPage } from './views/components/workbook/workbook';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import AppLoading, { SubtleLoader } from './views/components/site/loading';
+import AppLoading from './views/components/site/loading';
 import httpService from './infrastructure/http/httpService';
 import { Env } from './infrastructure/env/env';
 import { AuthenticationGuard } from './views/routing/AuthenticationGuard';
@@ -17,27 +17,27 @@ function App() {
   
   useEffect(() => {
     secure && httpService.addAccessTokenInterceptor(getAccessTokenSilently, loginWithRedirect);
-}, [getAccessTokenSilently, secure]);
+  }, [getAccessTokenSilently, secure]);
 
-useEffect(() => {
-    secure && httpService.add401LogoutInterceptor(logout);
-}, [logout, secure]);
+  useEffect(() => {
+      secure && httpService.add401LogoutInterceptor(logout);
+  }, [logout, secure]);
+
 
   return (<>
     <BrowserRouter>
-    <Suspense fallback={<AppLoading />}>
-                {(secure && isLoading)
-                    ? <SubtleLoader />
-                    : <Routes>
-                        {Env.isDevelopment
-                            ? <Route path="/*" element={<WorkbookPage />} />
-                            : <Route
-                                path='/*'
-                                element={<AuthenticationGuard component={WorkbookPage} />}
-                            />
-                        }
-                    </Routes>}
-            </Suspense>
+      {(secure && isLoading)
+        ? <AppLoading />
+        : <Routes>
+          {Env.isDevelopment
+            ? <Route path="/*" element={<WorkbookPage />} />
+            : <Route
+              path='/*'
+              element={<AuthenticationGuard component={WorkbookPage} />}
+            />
+          }
+        </Routes>}
+
     </BrowserRouter>
     <ToastContainer
       position="bottom-right"
