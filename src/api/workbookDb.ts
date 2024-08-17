@@ -26,7 +26,9 @@ import { UserWorkbook } from '../core/workbook';
 async function getWorkbook() {
     const wbRef = collection(db, 'workbooks')//.withConverter(workbookConverter);
     const q = query(wbRef, where("userId", "==", "u123456"));
-    const wb = (await getDocs(q)).docs[0].data() as UserWorkbook;
+    const doc = (await getDocs(q)).docs[0];
+    const wb = doc.data() as UserWorkbook;
+    wb.id = doc.id;
     return wb;
 }
 async function saveWorkbook(workbook: UserWorkbook) {

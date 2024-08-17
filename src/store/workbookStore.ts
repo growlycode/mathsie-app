@@ -20,13 +20,33 @@ const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "saveWorkbook" 
 }
 
 
-const useWorkbookStore = create<WorkbookStore>((set) => ({
+const useWorkbookStore = create<WorkbookStore>((set) => {
+
+    const send = async (apiCall: () => Promise<any>) => {
+        set((state: WorkbookStore) => ({ ...state, loading: true }))
+        try {
+            const data = await apiCall();
+            set(s => ({ ...s, error: undefined, ...data }))
+        } catch (error: any) {
+            set(s => ({ ...s, error: error.message, loading: false }))
+        } finally {
+            set(s => ({ ...s, loading: false }))
+        }
+    }
+
+    const saveWorkbookToServer = async (wb: UserWorkbook) => {
+        send(async () => {
+            const workbook = await workbookService.saveWorkbook(wb);
+            return { workbook };
+        });
+    };
+
+    return ({
     ...initialState,
 
     setPage: (page: number) => {
         set(s => {
-            // do server save
-
+            s.workbook && saveWorkbookToServer(s.workbook);
             const currentPage = Math.min(s.workbook!.worksheets.length, page);
             return ({ ...s, currentPage });
         } )
@@ -37,28 +57,14 @@ const useWorkbookStore = create<WorkbookStore>((set) => ({
     },
 
     fetchWorkbookForUser: async () => {
-        set((state: WorkbookStore) => ({ ...state, loading: true }))
-        try {
+        return send(async () => {
             const workbook = await workbookService.getWorkbook();
-            set(s => ({ ...s, error: undefined, workbook, currentPage: 0 }))
-        } catch (error: any) {
-            set(s => ({ ...s, error: error.message, loading: false }))
-        } finally {
-            set(s => ({ ...s, loading: false }))
-        }
+            return { workbook, currentPage: 0 };
+        });
     },
 
-    saveWorkbookToServer: async (wb: UserWorkbook) => {
-        set((state: WorkbookStore) => ({ ...state, loading: true }))
-        try {
-            const workbook = await workbookService.saveWorkbook(wb);
-            set(s => ({ ...s, error: undefined, workbook }))
-        } catch (error: any) {
-            set(s => ({ ...s, error: error.message, loading: false }))
-        } finally {
-            set(s => ({ ...s, loading: false }))
-        }
-    }
-}))
+    saveWorkbookToServer
+})
+})
 
 export default useWorkbookStore
