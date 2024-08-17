@@ -8,6 +8,7 @@ export interface Equation {
 
 export interface UserWorkbook {
     id: string;
+    title: string;
     worksheets: UserWorksheet[];
     hasCorrections: boolean;
 }

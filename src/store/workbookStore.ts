@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { UserWorkbook } from "../core/workbook";
-import { workbookService } from "../api/workbookService";
+import { workbookService } from "../api/workbookDb";
 
 interface WorkbookStore {
     workbooks: UserWorkbook[];
@@ -19,6 +19,7 @@ const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "saveWorkbook" 
     currentPage: 0
 }
 
+
 const useWorkbookStore = create<WorkbookStore>((set) => ({
     ...initialState,
 
@@ -27,8 +28,7 @@ const useWorkbookStore = create<WorkbookStore>((set) => ({
             // do server save
 
             const currentPage = Math.min(s.workbook!.worksheets.length, page);
-            const worksheet = s.workbook!.worksheets[currentPage];
-            return ({ ...s, currentPage, worksheet: { ...worksheet} });
+            return ({ ...s, currentPage });
         } )
     },
 
@@ -40,7 +40,19 @@ const useWorkbookStore = create<WorkbookStore>((set) => ({
         set((state: WorkbookStore) => ({ ...state, loading: true }))
         try {
             const workbook = await workbookService.getWorkbook();
-            set(s => ({ ...s, error: undefined, workbook, currentPage: 0, worksheet: workbook.worksheets[0] }))
+            set(s => ({ ...s, error: undefined, workbook, currentPage: 0 }))
+        } catch (error: any) {
+            set(s => ({ ...s, error: error.message, loading: false }))
+        } finally {
+            set(s => ({ ...s, loading: false }))
+        }
+    },
+
+    saveWorkbookToServer: async (wb: UserWorkbook) => {
+        set((state: WorkbookStore) => ({ ...state, loading: true }))
+        try {
+            const workbook = await workbookService.saveWorkbook(wb);
+            set(s => ({ ...s, error: undefined, workbook }))
         } catch (error: any) {
             set(s => ({ ...s, error: error.message, loading: false }))
         } finally {
