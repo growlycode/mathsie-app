@@ -59,8 +59,8 @@ export const SketchCanvas = ({ uws, onSave }: DrawingCanvasProps) => {
             <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
             <IconButton onClick={handleUndoClick} faClass="rotate-left" />
             <IconButton onClick={handleRedoClick} faClass="rotate-right" />
-            <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
-            <IconButton onClick={save} faClass="save" />
+            {/* <hr className="h-px my-1 bg-gray-200 border-0 dark:bg-gray-700" />
+            <IconButton onClick={save} faClass="save" /> */}
         </div>
     </>
 }

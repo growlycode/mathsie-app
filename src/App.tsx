@@ -4,36 +4,28 @@ import 'react-toastify/dist/ReactToastify.css';
 import { WorkbookPage } from './views/components/workbook/workbook';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+
 import AppLoading from './views/components/site/loading';
-import httpService from './infrastructure/http/httpService';
-import { Env } from './infrastructure/env/env';
-import { AuthenticationGuard } from './views/routing/AuthenticationGuard';
+import { PrivateRoute } from './views/routing/PrivateRoute';
+import { auth } from './api/firebase-init';
+import { Login } from './views/components/auth/login';
+import { useAuth } from './auth/hooks';
+``
 
 function App() {
-  const { getAccessTokenSilently, loginWithRedirect, logout, isLoading } = useAuth0();
-  const secure = !Env.isDevelopment;
-  
-  useEffect(() => {
-    secure && httpService.addAccessTokenInterceptor(getAccessTokenSilently, loginWithRedirect);
-  }, [getAccessTokenSilently, secure]);
-
-  useEffect(() => {
-      secure && httpService.add401LogoutInterceptor(logout);
-  }, [logout, secure]);
-
+  const { loading } = useAuth(auth);
 
   return (<>
     <BrowserRouter>
-      {(secure && isLoading)
+      {loading
         ? <AppLoading />
         : <Routes>
-          {Env.isDevelopment
+          <Route path="/login" element={<Login />} />
+          {false //Env.isDevelopment
             ? <Route path="/*" element={<WorkbookPage />} />
             : <Route
               path='/*'
-              element={<AuthenticationGuard component={WorkbookPage} />}
+              element={<PrivateRoute><WorkbookPage/></PrivateRoute>}
             />
           }
         </Routes>}
