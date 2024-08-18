@@ -10,7 +10,7 @@ import { PrivateRoute } from './views/routing/PrivateRoute';
 import { Login } from './views/components/auth/login';
 import { Env } from './infrastructure/env/env';
 import { useAuth } from './auth/hooks';
-``
+import { auth } from './api/firebase-init';
 
 function App() {
   const { loading } = useAuth(auth);
