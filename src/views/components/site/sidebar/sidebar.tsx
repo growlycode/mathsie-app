@@ -18,7 +18,7 @@ const ExampleSidebar: FC = function () {
   }, [setCurrentPage]);
 
   return (
-    <Sidebar id="sidebar" aria-label="Sidebar with multi-level dropdown example" className="hidden md:block flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 pt-16 h-full duration-75 border-r border-gray-200 lg:flex transition-width dark:border-gray-700 w-64">
+    <Sidebar id="sidebar" aria-label="Sidebar with multi-level dropdown example" className="hidden lg:block flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 pt-16 h-full duration-75 border-r border-gray-200 lg:flex transition-width dark:border-gray-700 w-64">
       <div className="flex h-full flex-col justify-between py-2">
         <div>
           <Sidebar.Items>
