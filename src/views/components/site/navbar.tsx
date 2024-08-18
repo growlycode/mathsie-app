@@ -15,8 +15,8 @@ const SiteNavbar = ({ children }: PropsWithChildren) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center">
-              <img alt="" src={logo} className="mr-3 h-6 sm:h-8" />
-              <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+              <img alt="" src={logo} className="sm:mr-3 h-6 sm:h-8" />
+              <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white hidden sm:block">
                 mathsie
               </span>
             </Link>
@@ -31,7 +31,7 @@ const SiteNavbar = ({ children }: PropsWithChildren) => {
             {children}
           </div>
           <div className="flex items-center gap-2">
-            <DarkThemeToggle />
+            <DarkThemeToggle className="hidden sm:block" />
             <LogoutButton />
           </div>
         </div>
