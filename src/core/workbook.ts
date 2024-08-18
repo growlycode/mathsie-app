@@ -1,4 +1,6 @@
+import { DocumentReference } from "firebase/firestore";
 import { CanvasPath } from "../views/components/canvas/types";
+import { User } from "./user";
 
 export interface Equation {
     left: number;
@@ -9,9 +11,11 @@ export interface Equation {
 
 export interface UserWorkbook {
     id: string;
+    userId: DocumentReference;
     title: string;
     worksheets: UserWorksheet[];
-    hasCorrections: boolean;
+    status: string;
+    user: User;
 }
 
 export interface UserWorksheet {

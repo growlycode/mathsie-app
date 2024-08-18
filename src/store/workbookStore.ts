@@ -9,13 +9,14 @@ interface WorkbookStore {
     loading: boolean;
     error?: string | undefined;
     fetchWorkbookForUser: () => void;
+    fetchWorkbooks: () => void;
     saveWorkbook: (wb: UserWorkbook) => void;
     setPage: (page: number) => void;
     showSidebar: boolean;
     toggleSidebar: () => void;
 }
 
-const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "saveWorkbook" | "nextPage" | "setPage" | "toggleSidebar"> = {
+const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "fetchWorkbooks" | "saveWorkbook" | "nextPage" | "setPage" | "toggleSidebar"> = {
     workbooks: [],
     loading: false,
     currentPage: 0,
@@ -60,7 +61,7 @@ const useWorkbookStore = create<WorkbookStore>((set) => {
     },
 
     saveWorkbook: (workbook: UserWorkbook) => {
-        set(s => ({ ...s, workbook }));
+        set(s => ({ ...s, workbook: { ...workbook, status: 'started'} }));
     },
 
     fetchWorkbookForUser: async () => {
@@ -70,7 +71,18 @@ const useWorkbookStore = create<WorkbookStore>((set) => {
         });
     },
 
-    saveWorkbookToServer
+    saveWorkbookToServer,
+
+    submitWorkbook: async (wb: UserWorkbook) => {
+        return saveWorkbookToServer({...wb, status: 'submitted'})
+    },
+
+    fetchWorkbooks: async () => {
+        return send(async () => {
+            const workbooks = await workbookService.getWorkbooks();
+            return { workbooks };
+        });
+    },
 })
 })
 

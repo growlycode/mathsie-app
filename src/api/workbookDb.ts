@@ -1,9 +1,10 @@
 
 
-import { collection, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 
 import { db } from './firebase-init';
 import { UserWorkbook } from '../core/workbook';
+import { User } from '../core/user';
 
 
 // const workbookConverter = {
@@ -38,8 +39,26 @@ async function saveWorkbook(workbook: UserWorkbook) {
     return workbook;
 }
 
+async function getWorkbooks() {
+    const wbRef = collection(db, 'workbooks');
+    const docs = (await getDocs(wbRef)).docs;
+
+    const uwbs: UserWorkbook[] = [];
+    for (let index = 0; index < docs.length; index++) {
+        const d = docs[index];
+        const uwb = d.data() as UserWorkbook;
+        const user = await getDoc(uwb.userId);
+        uwb.user = user.data() as User;
+        uwbs.push(uwb);
+        
+    }
+    return uwbs;
+}
+
+
 
 export const workbookService = {
     getWorkbook,
-    saveWorkbook
+    saveWorkbook,
+    getWorkbooks
 };

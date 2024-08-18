@@ -16,10 +16,15 @@ function WorkbookPage() {
     fetchWorkbookForUser()
   }, []);
 
-  function updateUserWorkbook(uws: UserWorksheet) {
-    workbook && saveWorkbook({ ...workbook, worksheets: listWithItemReplaced(uws.id, uws, workbook!.worksheets) });
+  function updateWorkbook(uws: UserWorksheet) {
+    saveWorkbook({ ...workbook!, worksheets: listWithItemReplaced(uws.id, uws, workbook!.worksheets),  });
     return Promise.resolve();
   }
+
+  // function onSubmitWorkbook() {
+  //   submitWorkbook(workbook);
+  //   return Promise.resolve();
+  // }
 
   return (<>
     <Navbar>
@@ -30,7 +35,7 @@ function WorkbookPage() {
       <DataLoading title={"workbook"} emptyMessage={"No workbooks assigned"} isLoading={loading} hasError={!!error} hasData={!!workbook}>
         {() => {
           return <>
-            <WorksheetPage uworksheet={workbook!.worksheets[currentPage]} onSave={updateUserWorkbook} />
+            <WorksheetPage uworksheet={workbook!.worksheets[currentPage]} onSave={updateWorkbook} />
           </>
         }}
       </DataLoading>
