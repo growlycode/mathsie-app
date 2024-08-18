@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { UserWorksheet } from "../../../core/workbook";
 import { listWithItemReplaced } from "../../../infrastructure/util/array";
-import { WorksheetPage } from "../worksheet/worksheet";
-import { PageControls } from "./controls";
+import { PageControls } from "../../components/worksheet/page-controls";
 import useWorkbookStore from "../../../store/workbookStore";
-import { DataLoading } from "../site/data-loading";
-import { SiteHeader } from "../site/header";
+import { DataLoading } from "../../components/site/data-loading";
+import { WorksheetPage } from "../../components/worksheet/worksheet";
+import Navbar from "../../components/site/navbar";
 
-export function WorkbookPage() {
+function WorkbookPage() {
 
   const { workbook, currentPage, setPage, fetchWorkbookForUser, saveWorkbook, loading, error } = useWorkbookStore();
 
@@ -21,11 +21,12 @@ export function WorkbookPage() {
     return Promise.resolve();
   }
 
-  return (
-    <div className='mathsie-workbook'>
-      <SiteHeader>
-        {!!workbook && <PageControls currentPage={currentPage} totalPages={workbook.worksheets.length} setPage={setPage} />}
-      </SiteHeader>
+  return (<>
+    <Navbar>
+      {!!workbook && <PageControls currentPage={currentPage} totalPages={workbook.worksheets.length} setPage={setPage} />}
+    </Navbar>
+    <div className="flex items-start pt-16 w-full h-full">
+
       <DataLoading title={"workbook"} emptyMessage={"No workbooks assigned"} isLoading={loading} hasError={!!error} hasData={!!workbook}>
         {() => {
           return <>
@@ -35,6 +36,9 @@ export function WorkbookPage() {
       </DataLoading>
 
     </div>
+  </>
+
   );
 }
 
+export default WorkbookPage;

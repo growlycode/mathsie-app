@@ -1,16 +1,15 @@
 
 import './App.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import { WorkbookPage } from './views/components/workbook/workbook';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './views/routing/PrivateRoute';
 import { useAuth } from './auth/hooks';
 import { auth } from './api/firebase-init';
 import { AppLoading } from './views/components/site/loading';
-import DashboardPage from './views/pages';
 import SignInPage from './views/pages/authentication/sign-in';
-import { Env } from './infrastructure/env/env';
+import NavbarSidebarLayout from './views/layouts/navbar-sidebar';
+import WorkbookPage from './views/pages/workbook';
 
 function App() {
   const { loading } = useAuth(auth);
@@ -22,13 +21,10 @@ function App() {
         : <Routes>
           <Route path="/login" element={<SignInPage />} />
           <Route path="/workbook" element={<PrivateRoute><WorkbookPage /></PrivateRoute>} />
-          {Env.isDevelopment
-            ? <Route path="/*" element={<DashboardPage />} />
-            : <Route
+          <Route
               path='/*'
-              element={<PrivateRoute><DashboardPage /></PrivateRoute>}
+              element={<PrivateRoute><NavbarSidebarLayout /></PrivateRoute>}
             />
-          }
         </Routes>}
 
     </BrowserRouter>

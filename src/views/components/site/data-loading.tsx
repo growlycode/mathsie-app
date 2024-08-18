@@ -17,7 +17,7 @@ export const DataLoading = ({ title, hasError, emptyMessage, isLoading, hasData,
     const errorDisplayMessage = title ? `Failed to load ${title}...` : 'Failed to load...';
 
     return (
-        <div className={`data-loading${appendStyle(className)} h-full`}>
+        <div className={`data-loading${appendStyle(className)} h-full w-full`}>
             {hasError
                 ? <ErrorDisplay message={errorDisplayMessage} />
                 : isLoading

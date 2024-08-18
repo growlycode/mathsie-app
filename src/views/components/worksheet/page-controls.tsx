@@ -12,9 +12,9 @@ export function PageControls({ currentPage, totalPages, setPage }: {
     setPage(Math.max(0, currentPage - 1));
   }
 
-  return <div className="flex grow gap-4 items-center">
-      { currentPage > 0 && <IconButton onClick={prevSheet} faClass="chevron-left" /> }
+  return <div className="flex gap-4 items-center">
+      <IconButton onClick={prevSheet} faClass="chevron-left" className={`${currentPage > 0 ? 'visible': 'invisible' } !p-3 bg-transparent`} />
       <span className="font-bold text-sm"><span className="block md:hidden">{currentPage + 1} / {totalPages}</span><span className="hidden md:block">Page {currentPage + 1} of {totalPages}</span></span>
-      { currentPage + 1 < totalPages && <IconButton onClick={nextSheet} faClass="chevron-right" /> }
+      <IconButton onClick={nextSheet} faClass="chevron-right" className={`${currentPage + 1 < totalPages ? 'visible': 'invisible'} !p-3 bg-transparent`} />
     </div>
 }

@@ -5,6 +5,8 @@ import Sidebar from "../components/site/sidebar/sidebar";
 import { MdFacebook } from "react-icons/md";
 import { FaDribbble, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import useWorkbookStore from "../../store/workbookStore";
+import { Navigate, Route, Routes } from "react-router-dom";
+import routes from "../../routes/routes";
 
 interface NavbarSidebarLayoutProps {
   isFooter?: boolean;
@@ -18,7 +20,7 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
         <Navbar />
         <div className="flex items-start pt-16">
           {/* Hide on larger screens, show only if toggled open */}
-          { showSidebar && <Sidebar className={'sm:hidden'} /> }
+          {showSidebar && <Sidebar className={'sm:hidden'} />}
           {/* Unhide on larger screens */}
           <Sidebar className={'hidden md:block'} />
           <MainContent isFooter={isFooter}>{children}</MainContent>
@@ -28,12 +30,23 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
   };
 
 const MainContent: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({
-  children,
   isFooter,
 }) {
   return (
     <main className="relative h-full w-full overflow-y-auto bg-gray-50 dark:bg-gray-900 lg:ml-64">
-      {children}
+      <Routes>
+        {routes.map((route, idx) => {
+          const path = route.path + (route.childRoutes?.length ? '/*' : '');
+          return route.component && (
+            <Route
+              key={idx}
+              path={path}
+              element={<route.component />} />
+          )
+        })}
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+      </Routes>
+
       {isFooter && (
         <div className="mx-4 mt-4">
           <MainContentFooter />

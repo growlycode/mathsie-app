@@ -1,15 +1,9 @@
-.mathsie-workbook {
-    border: 1px solid grey;
-    height: 100svh;
-    display: flex;
-    flex-direction: column;
-
     .mathsie-worksheet {
 
         .equations {
 
 
-           // flex-basis: 60%;
+            // flex-basis: 60%;
             text-align: right;
 
             &--inner {
@@ -25,7 +19,7 @@
                 font-optical-sizing: auto;
                 font-weight: 400;
                 font-style: normal;
-                font-variant-numeric: tabular-nums;            
+                font-variant-numeric: tabular-nums;
             }
 
 
@@ -64,4 +58,3 @@
         // }
 
     }
-}

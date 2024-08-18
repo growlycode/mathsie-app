@@ -3,9 +3,9 @@ import { appendStyle } from "../../../infrastructure/util/css";
 
 type ButtonTypes = "submit" | "reset" | "button" | undefined;
 
-export const IconButton = ({ faClass, text, onClick }: { faClass: string, text?: string, onClick: () => void }) => {
+export const IconButton = ({ faClass, className, text, onClick }: { faClass: string, className?: string, text?: string, onClick: () => void }) => {
 
-    return <Button className="gap-2" onClick={onClick}>
+    return <Button className={`gap-2${appendStyle(className)}`} onClick={onClick}>
         <i className={`fa fa-${faClass} fa-fw`} />
         {text && <div className="font-medium text-sm">{text}</div>}
     </Button>
