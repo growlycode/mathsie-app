@@ -36,8 +36,7 @@ export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => 
     };
 
     const handleClearClick = () => {
-        canvasRef.current?.clearCanvas();
-        save();
+        onSave({ ...uws, paths: [] })
     };
 
     const save = () => {
