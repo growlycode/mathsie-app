@@ -4,6 +4,7 @@ import Navbar from "../components/site/navbar";
 import Sidebar from "../components/site/sidebar/sidebar";
 import { MdFacebook } from "react-icons/md";
 import { FaDribbble, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import useWorkbookStore from "../../store/workbookStore";
 
 interface NavbarSidebarLayoutProps {
   isFooter?: boolean;
@@ -11,12 +12,15 @@ interface NavbarSidebarLayoutProps {
 
 const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
   function ({ children, isFooter = false }) {
-
+    const { showSidebar } = useWorkbookStore();
     return (
       <>
         <Navbar />
         <div className="flex items-start pt-16">
-          <Sidebar />
+          {/* Hide on larger screens, show only if toggled open */}
+          { showSidebar && <Sidebar className={'sm:hidden'} /> }
+          {/* Unhide on larger screens */}
+          <Sidebar className={'hidden md:block'} />
           <MainContent isFooter={isFooter}>{children}</MainContent>
         </div>
       </>

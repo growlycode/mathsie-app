@@ -11,12 +11,15 @@ interface WorkbookStore {
     fetchWorkbookForUser: () => void;
     saveWorkbook: (wb: UserWorkbook) => void;
     setPage: (page: number) => void;
+    showSidebar: boolean;
+    toggleSidebar: () => void;
 }
 
-const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "saveWorkbook" | "nextPage" | "setPage"> = {
+const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "saveWorkbook" | "nextPage" | "setPage" | "toggleSidebar"> = {
     workbooks: [],
     loading: false,
-    currentPage: 0
+    currentPage: 0,
+    showSidebar: false
 }
 
 
@@ -50,6 +53,10 @@ const useWorkbookStore = create<WorkbookStore>((set) => {
             const currentPage = Math.min(s.workbook!.worksheets.length, page);
             return ({ ...s, currentPage });
         } )
+    },
+
+    toggleSidebar: () => {
+        set(s => ({ ...s, showSidebar: !s.showSidebar }));
     },
 
     saveWorkbook: (workbook: UserWorkbook) => {
