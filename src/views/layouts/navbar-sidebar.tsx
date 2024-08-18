@@ -1,12 +1,11 @@
 import { Footer } from "flowbite-react";
 import { type FC, type PropsWithChildren } from "react";
 import Navbar from "../components/site/navbar";
-import Sidebar from "../components/site/sidebar/sidebar";
 import { MdFacebook } from "react-icons/md";
 import { FaDribbble, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
-import useWorkbookStore from "../../store/workbookStore";
 import { Navigate, Route, Routes } from "react-router-dom";
 import routes from "../../routes/routes";
+import { ResponsiveSidebar } from "../components/site/sidebar/responsive-sidebar";
 
 interface NavbarSidebarLayoutProps {
   isFooter?: boolean;
@@ -14,15 +13,11 @@ interface NavbarSidebarLayoutProps {
 
 const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
   function ({ children, isFooter = false }) {
-    const { showSidebar } = useWorkbookStore();
     return (
       <>
         <Navbar />
         <div className="flex items-start pt-16">
-          {/* Hide on larger screens, show only if toggled open */}
-          {showSidebar && <Sidebar className={'lg:hidden'} />}
-          {/* Unhide on larger screens */}
-          <Sidebar className={'hidden lg:block'} />
+          <ResponsiveSidebar />
           <MainContent isFooter={isFooter}>{children}</MainContent>
         </div>
       </>

@@ -8,7 +8,7 @@ interface WorkbookStore {
     currentPage: number;
     loading: boolean;
     error?: string | undefined;
-    fetchWorkbookForUser: () => void;
+    fetchWorkbookForUser: (userId: string) => void;
     fetchWorkbooks: () => void;
     saveWorkbook: (wb: UserWorkbook) => void;
     setPage: (page: number) => void;
@@ -64,9 +64,9 @@ const useWorkbookStore = create<WorkbookStore>((set) => {
         set(s => ({ ...s, workbook: { ...workbook, status: 'started'} }));
     },
 
-    fetchWorkbookForUser: async () => {
+    fetchWorkbookForUser: async (userId: string) => {
         return send(async () => {
-            const workbook = await workbookService.getWorkbook();
+            const workbook = await workbookService.getWorkbook(userId);
             return { workbook, currentPage: 0 };
         });
     },

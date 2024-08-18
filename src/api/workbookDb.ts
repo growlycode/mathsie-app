@@ -24,12 +24,13 @@ import { User } from '../core/user';
 
 
 
-async function getWorkbook() {
+async function getWorkbook(userId: string) {
     const wbRef = collection(db, 'workbooks')//.withConverter(workbookConverter);
-    const q = query(wbRef, where("userId", "==", "u123456"));
-    const doc = (await getDocs(q)).docs[0];
-    const wb = doc.data() as UserWorkbook;
-    wb.id = doc.id;
+    const userRef = doc(db, 'users', userId);
+    const q = query(wbRef, where("userId", "==", userRef));
+    const uwb = (await getDocs(q)).docs[0];
+    const wb = uwb.data() as UserWorkbook;
+    wb.id = wb.id;
     return wb;
 }
 async function saveWorkbook(workbook: UserWorkbook) {
@@ -50,7 +51,6 @@ async function getWorkbooks() {
         const user = await getDoc(uwb.userId);
         uwb.user = user.data() as User;
         uwbs.push(uwb);
-        
     }
     return uwbs;
 }

@@ -11,7 +11,7 @@ import { IconType } from "react-icons";
 import { appendStyle } from "../../../../infrastructure/util/css";
 
 
-const ExampleSidebar = ({ className }: { className?: string }) => {
+const AppSidebar = ({ className }: { className?: string }) => {
   const { user } = useAuth(auth);
   const [currentPage, setCurrentPage] = useState("");
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -64,4 +64,4 @@ const LinkItem = ({ text, href, icon, currentPage }: { text: string, href: strin
 
   </li>
 }
-export default ExampleSidebar;
+export default AppSidebar;

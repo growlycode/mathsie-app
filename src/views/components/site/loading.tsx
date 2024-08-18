@@ -11,7 +11,7 @@ export const AppLoading = ({ text = 'Loading mathsie' }: { text?: string }) => {
                 <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
         </svg>
-        {text && <div className="font-medium text-lg">{text}</div>}
+        {text && <div className="font-medium text-lg dark:text-white">{text}</div>}
     </div>);
 
 }
