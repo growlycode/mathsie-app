@@ -1,19 +1,17 @@
+
     .mathsie-worksheet {
 
         .equations {
 
 
             // flex-basis: 60%;
-            text-align: right;
+            // text-align: right;
 
             &--inner {
                 display: inline-grid;
                 grid-template-columns: auto auto auto auto;
                 text-align: center;
                 grid-gap: 1.5rem;
-                height: 100%;
-
-                text-align: right;
 
                 font-family: "Inter Tight", sans-serif;
                 font-optical-sizing: auto;

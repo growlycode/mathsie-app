@@ -27,7 +27,7 @@ export function WorksheetPage({ uworksheet, onSave }: {
     }, [uworksheet])
 
     return <div className='mathsie-worksheet flex h-full'>
-        <div className={`equations p-[5svh] md:pl-[10svh] pr-0 basis-1/2`}>
+        <div className={`equations p-[5svh] md:pl-[10svh] pr-0 basis-1/2 text-right`}>
             <div className={`equations--inner `} ref={ref}>
                 {uworksheet.equations.map((op: Equation, idx: number) => <Fragment key={`o-${idx}`}>
                     <div className='select-none overflow-x-visible'>{op.left}</div>
@@ -38,6 +38,6 @@ export function WorksheetPage({ uworksheet, onSave }: {
                 )}
             </div>
         </div>
-        <SketchCanvas className="basis-1/2" uws={uworksheet} onSave={onSave} />
+        <SketchCanvas className="basis-1/2 relative" uws={uworksheet} onSave={onSave} />
     </div>
 }
