@@ -8,9 +8,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AppLoading from './views/components/site/loading';
 import { PrivateRoute } from './views/routing/PrivateRoute';
 import { Login } from './views/components/auth/login';
-import { Env } from './infrastructure/env/env';
 import { useAuth } from './auth/hooks';
 import { auth } from './api/firebase-init';
+import DashboardPage from './pages';
 
 function App() {
   const { loading } = useAuth(auth);
@@ -21,11 +21,12 @@ function App() {
         ? <AppLoading />
         : <Routes>
           <Route path="/login" element={<Login />} />
-          {Env.isDevelopment
-            ? <Route path="/*" element={<WorkbookPage />} />
+          <Route path="/workbook" element={<PrivateRoute><WorkbookPage /></PrivateRoute>} />
+          {false//Env.isDevelopment
+            ? <Route path="/*" element={<DashboardPage />} />
             : <Route
               path='/*'
-              element={<PrivateRoute><WorkbookPage /></PrivateRoute>}
+              element={<PrivateRoute><DashboardPage /></PrivateRoute>}
             />
           }
         </Routes>}
@@ -43,6 +44,8 @@ function App() {
       draggable
       pauseOnHover
     />
+
+    
   </>
   );
 }

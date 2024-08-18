@@ -6,6 +6,7 @@ import checker from 'vite-plugin-checker';
 export default defineConfig({
   plugins: [react(), checker({ typescript: true })],
   server: {
+    port: 5000,
     proxy: {
         '/api': {
             target: 'https://localhost:7103',
