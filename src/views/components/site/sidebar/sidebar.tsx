@@ -29,8 +29,6 @@ const ExampleSidebar = ({ className }: { className?: string }) => {
     setCurrentPage(newPage);
   }, [setCurrentPage]);
 
-
-
   return (
     <Sidebar id="sidebar" aria-label="Sidebar with multi-level dropdown example" className={`flex fixed top-0 left-0 z-20 flex-col flex-shrink-0 pt-16 h-full duration-75 border-r border-gray-200 lg:flex transition-width dark:border-gray-700 w-64${appendStyle(className)}`}>
       <div className="flex h-full flex-col justify-between py-2">

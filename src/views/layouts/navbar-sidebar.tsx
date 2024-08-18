@@ -20,9 +20,9 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
         <Navbar />
         <div className="flex items-start pt-16">
           {/* Hide on larger screens, show only if toggled open */}
-          {showSidebar && <Sidebar className={'md:hidden'} />}
+          {showSidebar && <Sidebar className={'lg:hidden'} />}
           {/* Unhide on larger screens */}
-          <Sidebar className={'hidden md:block'} />
+          <Sidebar className={'hidden lg:block'} />
           <MainContent isFooter={isFooter}>{children}</MainContent>
         </div>
       </>
