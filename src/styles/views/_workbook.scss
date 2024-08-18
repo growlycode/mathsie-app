@@ -1,58 +1,19 @@
+.mathsie-worksheet {
 
-    .mathsie-worksheet {
+    .equations {
 
-        .equations {
+        &--inner {
+            display: inline-grid;
+            grid-template-columns: auto auto auto auto;
+            text-align: center;
+            grid-gap: 1.5rem;
 
-
-            // flex-basis: 60%;
-            // text-align: right;
-
-            &--inner {
-                display: inline-grid;
-                grid-template-columns: auto auto auto auto;
-                text-align: center;
-                grid-gap: 1.5rem;
-
-                font-family: "Inter Tight", sans-serif;
-                font-optical-sizing: auto;
-                font-weight: 400;
-                font-style: normal;
-                font-variant-numeric: tabular-nums;
-            }
-
-
-            .operand,
-            .operator,
-            .equals {
-                -webkit-user-select: none;
-                /* Safari */
-                -ms-user-select: none;
-                /* IE 10 and IE 11 */
-                user-select: none;
-                /* Standard syntax */
-            }
-
-            .is-error {
-                display: none;
-            }
-
-
-
-            .operator,
-            .equals {
-                text-align: center;
-            }
+            font-family: "Inter Tight", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-variant-numeric: tabular-nums;
         }
-
-        // .canvas-wrapper {
-        //     flex-basis: 40%;
-        //     margin-left: -10px;
-        //     display: flex;
-
-        //     .mathsie-canvas {
-        //         flex-grow: 1;
-        //         border: none !important;
-        //     }
-        // }
-
     }
+
+}

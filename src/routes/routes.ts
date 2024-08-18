@@ -5,7 +5,6 @@ import { RouteSpecification } from '../infrastructure/routing/route-specificatio
 const Dashboard = React.lazy(() => import('../views/pages/dashboard'));
 
 const routes: RouteSpecification[] = [
-  { path: '/', name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard }
 ];
 
