@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { UserWorksheet } from "../../../core/workbook";
 import { MReactSketchCanvas, ReactSketchCanvasRef } from "./ReactSketchCanvas/MReactSketchCanvas";
-import { CanvasPath } from "./types";
 import { IconButton } from "../buttons/icon-button";
 import { prependStyle } from "../../../infrastructure/util/css";
 
@@ -38,17 +37,11 @@ export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => 
 
     const handleClearClick = () => {
         canvasRef.current?.clearCanvas();
-        canvasRef.current?.loadPaths([]);
+        save();
     };
 
-
-    const savePaths = (paths: CanvasPath[]) => {
-        onSave({ ...uws, paths });
-    }
-
     const save = () => {
-        canvasRef.current && canvasRef.current.exportPaths()
-            .then(savePaths);
+        canvasRef.current?.exportPaths().then(paths => onSave({ ...uws, paths }));
     }
 
     return <div className={`${prependStyle(className)}`}>
