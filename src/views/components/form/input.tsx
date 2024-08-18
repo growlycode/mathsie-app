@@ -1,12 +1,15 @@
+import { Label } from "flowbite-react";
 import { HTMLInputTypeAttribute } from "react";
-import { RegisterOptions, UseFormRegister } from "react-hook-form";
+import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { appendErrorStyle } from "../../../infrastructure/util/css";
 
 export interface FormFieldProps {
-    register: UseFormRegister<any>; 
-    field: string; 
+    register: UseFormRegister<any>;
+    errors?: FieldErrors<any>;
+    field: string;
     label: string;
     rules?: RegisterOptions;
-    type?:  HTMLInputTypeAttribute | undefined;
+    type?: HTMLInputTypeAttribute | undefined;
 };
 
 export interface FormInputProps extends FormFieldProps {
@@ -14,11 +17,12 @@ export interface FormInputProps extends FormFieldProps {
     autoComplete?: string
 }
 
-export const FormInput = ({register, field, autoComplete, label, rules = {}, type }: FormInputProps) => {
+export const FormInput = ({ register, errors = {}, field, autoComplete, label, rules = {}, type }: FormInputProps) => {
     return <div>
-        <label htmlFor={field} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
+
+        <Label htmlFor={field}>{label}</Label>
         <div className="mt-2">
-            <input type={type} {...register(field, rules)} autoComplete={autoComplete} className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+            <input type={type} {...register(field, rules)} autoComplete={autoComplete} className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 rounded-lg p-2.5 text-sm${appendErrorStyle(errors[field])}`} />
         </div>
     </div>;
 }

@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { DarkThemeToggle, Navbar } from "flowbite-react";
 import logo from "../../../assets/mathsie-icon.svg";
+import LogoutButton from "../auth/logout-button";
 
 const ExampleNavbar: FC = function () {
   return (
@@ -16,7 +17,9 @@ const ExampleNavbar: FC = function () {
             </Navbar.Brand>
           </div>
           <div className="flex items-center gap-3">
+            
             <DarkThemeToggle />
+            <LogoutButton />
           </div>
         </div>
       </div>

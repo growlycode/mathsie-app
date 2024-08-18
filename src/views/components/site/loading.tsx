@@ -3,7 +3,7 @@ export const SubtleLoader = () => {
     return <div className={`flex h-full w-full items-center justify-center flex-wrap`}>...</div>
 }
 
-const AppLoading = ({ text = 'Loading mathsie' }: { text?: string }) => {
+export const AppLoading = ({ text = 'Loading mathsie' }: { text?: string }) => {
 
     return (<div className={`flex h-full w-full items-center justify-center flex-wrap flex-col`}>
         <svg className="animate-bounce w-40 h-40 ...">
@@ -15,5 +15,3 @@ const AppLoading = ({ text = 'Loading mathsie' }: { text?: string }) => {
     </div>);
 
 }
-
-export default AppLoading;

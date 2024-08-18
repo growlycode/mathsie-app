@@ -1,16 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Badge, Dropdown, Table } from "flowbite-react";
+import { Badge, Table } from "flowbite-react";
 import type { FC } from "react";
-import NavbarSidebarLayout from "../views/layouts/navbar-sidebar";
+import NavbarSidebarLayout from "../layouts/navbar-sidebar";
 
 const DashboardPage: FC = function () {
+
   return (
     <NavbarSidebarLayout>
       <div className="px-4 pt-6">
         <div className="">
-          <LatestTransactions />
+          <LatestWorkbooks />
         </div>
-        <div className="my-6">
+        <div className="my-6 hidden">
           <AcquisitionOverview />
         </div>
       </div>
@@ -18,25 +19,25 @@ const DashboardPage: FC = function () {
   );
 };
 
-const Datepicker: FC = function () {
-  return (
-    <span className="text-sm text-gray-600">
-      <Dropdown inline label="Last 7 days">
-        <Dropdown.Item>
-          <strong>Sep 16, 2021 - Sep 22, 2021</strong>
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item>Yesterday</Dropdown.Item>
-        <Dropdown.Item>Today</Dropdown.Item>
-        <Dropdown.Item>Last 7 days</Dropdown.Item>
-        <Dropdown.Item>Last 30 days</Dropdown.Item>
-        <Dropdown.Item>Last 90 days</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item>Custom...</Dropdown.Item>
-      </Dropdown>
-    </span>
-  );
-};
+// const Datepicker: FC = function () {
+//   return (
+//     <span className="text-sm text-gray-600">
+//       <Dropdown inline label="Last 7 days">
+//         <Dropdown.Item>
+//           <strong>Sep 16, 2021 - Sep 22, 2021</strong>
+//         </Dropdown.Item>
+//         <Dropdown.Divider />
+//         <Dropdown.Item>Yesterday</Dropdown.Item>
+//         <Dropdown.Item>Today</Dropdown.Item>
+//         <Dropdown.Item>Last 7 days</Dropdown.Item>
+//         <Dropdown.Item>Last 30 days</Dropdown.Item>
+//         <Dropdown.Item>Last 90 days</Dropdown.Item>
+//         <Dropdown.Divider />
+//         <Dropdown.Item>Custom...</Dropdown.Item>
+//       </Dropdown>
+//     </span>
+//   );
+// };
 
 const AcquisitionOverview: FC = function () {
   return (
@@ -193,7 +194,7 @@ const AcquisitionOverview: FC = function () {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
+      {/* <div className="flex items-center justify-between border-t border-gray-200 pt-3 dark:border-gray-700 sm:pt-6">
         <Datepicker />
         <div className="shrink-0">
           <a
@@ -217,31 +218,31 @@ const AcquisitionOverview: FC = function () {
             </svg>
           </a>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-const LatestTransactions: FC = function () {
+const LatestWorkbooks: FC = function () {
   return (
     <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-            Latest Transactions
+            Latest workbooks
           </h3>
           <span className="text-base font-normal text-gray-600 dark:text-gray-400">
-            This is a list of latest transactions
+            The most recent assigned workbooks
           </span>
         </div>
-        <div className="shrink-0">
+        {/* <div className="shrink-0">
           <a
             href="#"
             className="rounded-lg p-2 text-sm font-medium text-primary-700 hover:bg-gray-100 dark:text-primary-500 dark:hover:bg-gray-700"
           >
             View all
           </a>
-        </div>
+        </div> */}
       </div>
       <div className="mt-8 flex flex-col">
         <div className="overflow-x-auto rounded-lg">
@@ -268,21 +269,6 @@ const LatestTransactions: FC = function () {
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
                       $2300
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment refund to{" "}
-                      <span className="font-semibold">#00910</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      -$670
                     </Table.Cell>
                     <Table.Cell className="flex whitespace-nowrap p-4">
                       <Badge color="success">Completed</Badge>
@@ -320,105 +306,13 @@ const LatestTransactions: FC = function () {
                       </span>
                     </Table.Cell>
                   </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Jese Leos</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 15, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $2300
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">THEMESBERG LLC</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 11, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $560
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Lana Lysle</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 6, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $1437
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment to{" "}
-                      <span className="font-semibold">Joseph Mcfall</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Apr 1, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $980
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Alphabet LLC</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mar 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $11,436
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <span className="mr-2 rounded-md bg-purple-100 py-0.5 px-2.5 text-xs font-medium text-purple-800 dark:bg-purple-200">
-                        In progress
-                      </span>
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-900 dark:text-white">
-                      Payment from{" "}
-                      <span className="font-semibold">Bonnie Green</span>
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      Mar 23, 2021
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap p-4 text-sm font-semibold text-gray-900 dark:text-white">
-                      $560
-                    </Table.Cell>
-                    <Table.Cell className="flex whitespace-nowrap p-4">
-                      <Badge color="success">Completed</Badge>
-                    </Table.Cell>
-                  </Table.Row>
                 </Table.Body>
               </Table>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between pt-3 sm:pt-6">
+      {/* <div className="flex items-center justify-between pt-3 sm:pt-6">
         <Datepicker />
         <div className="shrink-0">
           <a
@@ -442,7 +336,7 @@ const LatestTransactions: FC = function () {
             </svg>
           </a>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -6,10 +6,21 @@ import {
   HiClipboard,
   HiCog
 } from "react-icons/hi";
+import { useAuth } from "../../../../auth/hooks";
+import { auth } from "../../../../api/firebase-init";
+
 
 const ExampleSidebar: FC = function () {
-
+  const { user } = useAuth(auth);
   const [currentPage, setCurrentPage] = useState("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+
+    user?.getIdTokenResult().then(token => {
+      setIsAdmin(token.claims.role == "marker");
+    });
+  }, [user])
 
   useEffect(() => {
     const newPage = window.location.pathname;
@@ -22,8 +33,8 @@ const ExampleSidebar: FC = function () {
       <div className="flex h-full flex-col justify-between py-2">
         <div>
           <Sidebar.Items>
-            <Sidebar.ItemGroup>
-              <Sidebar.Item
+          { isAdmin &&<Sidebar.ItemGroup>
+               <Sidebar.Item
                 href="/"
                 icon={HiChartPie}
                 className={
@@ -32,7 +43,7 @@ const ExampleSidebar: FC = function () {
               >
                 Dashboard
               </Sidebar.Item>
-            </Sidebar.ItemGroup>
+            </Sidebar.ItemGroup> }
             <Sidebar.ItemGroup>
               <Sidebar.Item
                 href="/workbook"

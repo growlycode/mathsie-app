@@ -3,9 +3,9 @@ import { login, LoginProps } from "../../../api/login";
 
 import logo from "../../../assets/mathsie.svg";
 import { useState } from "react";
-import { ErrorAlert } from "../alerts/error-alert";
 import { useNavigate } from "react-router-dom";
-import { FormInput } from "../form/input";
+import { FormInput } from "../../components/form/input";
+import { ErrorAlert } from "../../components/alerts/error-alert";
 
 export const Login = () => {
 
