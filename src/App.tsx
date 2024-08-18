@@ -19,7 +19,7 @@ function App() {
         ? <AppLoading />
         : <Routes>
           <Route path="/login" element={<Login />} />
-          {false //Env.isDevelopment
+          {Env.isDevelopment
             ? <Route path="/*" element={<WorkbookPage />} />
             : <Route
               path='/*'
