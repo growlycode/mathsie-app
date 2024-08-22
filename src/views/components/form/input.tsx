@@ -1,28 +1,33 @@
 import { Label } from "flowbite-react";
 import { HTMLInputTypeAttribute } from "react";
-import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
-import { appendErrorStyle } from "../../../infrastructure/util/css";
+import { FieldErrors, FieldPath, FieldValues, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { appendErrorStyle, appendStyle } from "../../../infrastructure/util/css";
 
-export interface FormFieldProps {
-    register: UseFormRegister<any>;
-    errors?: FieldErrors<any>;
-    field: string;
-    label: string;
-    rules?: RegisterOptions;
+export interface FormFieldProps<TFieldValues extends FieldValues> {
+    register: UseFormRegister<TFieldValues>;
+    errors?: FieldErrors<TFieldValues>;
+    field: FieldPath<TFieldValues>;
+    label?: string;
+    rules?: RegisterOptions<TFieldValues>;
     type?: HTMLInputTypeAttribute | undefined;
+    className?: string;
 };
 
-export interface FormInputProps extends FormFieldProps {
+export interface FormInputProps<TFieldValues extends FieldValues> extends FormFieldProps<TFieldValues> {
 
+    placeholder?: string;
     autoComplete?: string
 }
 
-export const FormInput = ({ register, errors = {}, field, autoComplete, label, rules = {}, type }: FormInputProps) => {
+export function FormInput<TFieldValues extends FieldValues>({ register, className, errors = {}, 
+    field, placeholder, autoComplete, label, rules = {}, type }: FormInputProps<TFieldValues>) {
     return <div>
 
-        <Label htmlFor={field}>{label}</Label>
+        { label && <Label htmlFor={field} className="whitespace-nowrap">{label}</Label> }
         <div className="mt-2">
-            <input type={type} {...register(field, rules)} autoComplete={autoComplete} className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 rounded-lg p-2.5 text-sm${appendErrorStyle(errors[field])}`} />
+            <input type={type} {...register(field, rules)} autoComplete={autoComplete} 
+            placeholder={placeholder}
+            className={`block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 rounded-lg p-2.5 text-sm${appendStyle(className)}${appendErrorStyle(errors[field])}`} />
         </div>
     </div>;
 }

@@ -14,12 +14,12 @@ export const IconButton = ({ faClass, className, text, onClick }: { faClass: str
 interface ButtonProps extends PropsWithChildren {
     className?: string,
     type?: ButtonTypes;
-    onClick: () => void
+    onClick?: () => void
 }
 
 export const Button = ({ type = "button", className, children, onClick }: ButtonProps) => {
 
-    return <button type={type} onClick={onClick} className={`flex justify-center items-center p-4 rounded-lg bg-gray-200 border-none dark:bg-red-600 hover:bg-red-400${appendStyle(className)}`}>
+    return <button type={type} onClick={() => onClick && onClick()} className={`flex justify-center items-center p-4 rounded-lg bg-gray-200 border-none dark:bg-red-600 hover:bg-red-400${appendStyle(className)}`}>
         {children}
     </button>
 }

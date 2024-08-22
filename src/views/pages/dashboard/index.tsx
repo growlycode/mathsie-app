@@ -7,10 +7,8 @@ const DashboardPage = function () {
 
 
   return (
-    <div className="px-4 pt-6">
-      <div className="">
-        <LatestWorkbooks />
-      </div>
+    <div>
+      <LatestWorkbooks />
     </div>
   );
 };
@@ -23,7 +21,7 @@ const LatestWorkbooks: FC = function () {
   }, []);
 
   return (
-    <div className="rounded-lg bg-white p-4 shadow dark:bg-gray-800 sm:p-6 xl:p-8">
+    <div className="rounded-lg bg-white shadow dark:bg-gray-800 p-4 sm:p-6 xl:p-8">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
@@ -61,8 +59,6 @@ const LatestWorkbooks: FC = function () {
                       </span>
                     </Table.Cell>
                   </Table.Row>))}
-
-
                 </Table.Body>
               </Table>
             </div>

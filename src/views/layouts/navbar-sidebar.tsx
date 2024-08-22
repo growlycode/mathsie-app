@@ -6,6 +6,7 @@ import { FaDribbble, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import { Navigate, Route, Routes } from "react-router-dom";
 import routes from "../../routes/routes";
 import { ResponsiveSidebar } from "../components/site/sidebar/responsive-sidebar";
+import { appendStyle } from "../../infrastructure/util/css";
 
 interface NavbarSidebarLayoutProps {
   isFooter?: boolean;
@@ -36,7 +37,7 @@ const MainContent: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({
             <Route
               key={idx}
               path={path}
-              element={<route.component />} />
+              element={<div className={`w-full h-full${appendStyle(route.classNames || 'p-4 sm:p-6 xl:p-8')}`}><route.component /></div>} />
           )
         })}
         <Route path="/" element={<Navigate to="/dashboard" />} />

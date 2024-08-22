@@ -1,6 +1,9 @@
 import type { CustomFlowbiteTheme } from "flowbite-react";
 
 const flowbiteTheme: CustomFlowbiteTheme = {
+  label: {
+    base: "text-md"
+  },
   badge: {
     color: {
       primary:

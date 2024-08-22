@@ -3,9 +3,11 @@ import { RouteSpecification } from '../infrastructure/routing/route-specificatio
 
 
 const Dashboard = React.lazy(() => import('../views/pages/dashboard'));
+const CreateWorkbook = React.lazy(() => import('../views/pages/create-workbook'));
 
 const routes: RouteSpecification[] = [
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard }
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/workbooks/create', name: 'Create worksheet', component: CreateWorkbook }
 ];
 
 export default routes;

@@ -1,14 +1,11 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
-import {
-  HiChartPie, HiCog,
-  HiDocument
-} from "react-icons/hi";
 import { useAuth } from "../../../../auth/hooks";
 import { auth } from "../../../../api/firebase-init";
 import { Link } from "react-router-dom";
 import { IconType } from "react-icons";
 import { appendStyle } from "../../../../infrastructure/util/css";
+import { nav } from "../../../../routes/nav";
 
 
 const AppSidebar = ({ className }: { className?: string }) => {
@@ -34,13 +31,13 @@ const AppSidebar = ({ className }: { className?: string }) => {
       <div className="flex h-full flex-col justify-between py-2">
         <div>
           <Sidebar.Items>
-            {isAdmin && <Sidebar.ItemGroup>
-              <LinkItem href="/" text="Dashboard" icon={HiChartPie} currentPage={currentPage} />
-            </Sidebar.ItemGroup>}
-            <Sidebar.ItemGroup>
-              <LinkItem href="/workbook" text="Workbook" icon={HiDocument} currentPage={currentPage} />
-              <LinkItem href="/settings" text="Settings" icon={HiCog} currentPage={currentPage} />
-            </Sidebar.ItemGroup>
+            { nav.filter(item => isAdmin || !item.requiresAdmin).map((item, itemIdx) => {
+              return <Sidebar.ItemGroup key={`ig${itemIdx}`}>
+                  {item.items
+                  .filter(item => isAdmin || !item.requiresAdmin)
+                  .map((i, idx) => <LinkItem key={`li-${itemIdx}-${idx}`} href={i.href} text={i.text} icon={i.icon} currentPage={currentPage} />)}
+              </Sidebar.ItemGroup>
+            })}
           </Sidebar.Items>
         </div>
       </div>
