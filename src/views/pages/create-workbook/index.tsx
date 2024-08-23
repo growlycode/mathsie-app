@@ -3,7 +3,7 @@ import { FormInput } from '../../components/form/input';
 import { CbGroup } from '../../components/form/checkbox-group';
 import { ButtonGroup } from '../../components/buttons/button-group';
 import { HiAdjustments, HiOutlineFilter } from 'react-icons/hi';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormButton } from '../../components/buttons/form-button';
 import { ValidationError } from '../../components/form/validation-error';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,6 +41,8 @@ const CreateWorksheetPage = () => {
     console.log(data);
   };
 
+  const ops = useMemo(() => allOperations[operationType].operations.map(op => ({ value: op.id, label: op.label })), [operationType]);
+
   return (<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 md:w-1/2 xl:w-1/4 '>
     <div className='flex gap-4 justify-evenly'>
       <div
@@ -72,7 +74,7 @@ const CreateWorksheetPage = () => {
       </div>
     </div>
 
-    <div className=''>
+    <div>
       <FormInput
         type="text"
         label='Left operands'
@@ -84,7 +86,7 @@ const CreateWorksheetPage = () => {
       <ValidationError error={errors.leftOperand} />
     </div>
 
-    <div className=''>
+    <div>
       <FormInput
         type="text"
         label='Right operands'
@@ -96,22 +98,16 @@ const CreateWorksheetPage = () => {
       <ValidationError error={errors.rightOperand} />
     </div>
 
-    <div className=''>
+    <div>
       <ButtonGroup selected={operationType} label='Operation type(s)'
         fields={operationTypes} onSelected={setOperationType}
         className="pb-2">
       </ButtonGroup>
 
-      {operationType == 'basic'
-        ? <CbGroup control={control} field={'operations'}
-          fields={allOperations.basic.operations.map(op => ({ value: op.id, label: op.label }))}>
-          <ValidationError error={errors.operations} />
-        </CbGroup>
-        : <CbGroup control={control} field={'operations'}
-          fields={allOperations.family.operations.map(op => ({ value: op.id, label: op.label }))}>
-          <ValidationError error={errors.operations} />
-        </CbGroup>
-      }
+      <CbGroup control={control} field={'operations'}
+        fields={ops}>
+        <ValidationError error={errors.operations} />
+      </CbGroup>
     </div>
 
     <FormButton>Create workbook</FormButton>

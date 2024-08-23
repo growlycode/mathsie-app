@@ -13,7 +13,7 @@ export interface BasicOperation {
     func: (a: number, b: number) => number;
 }
 
-export const allOperations =
+export const allOperations: { [key: string]: { operations: BasicOperation[] } } =
 {
     basic: {
         operations: [
@@ -35,7 +35,7 @@ export const allOperations =
                 label: 'Multiplication',
                 func: (a: number, b: number) => a * b
             }
-        ] as BasicOperation[],
+        ],
     },
     family: {
         operations: [
@@ -51,6 +51,6 @@ export const allOperations =
                 label: 'Subtraction',
                 func: (a: number, b: number) => a - b
             }
-        ] as BasicOperation[]
+        ]
     }
 };
