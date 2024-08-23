@@ -1,84 +1,37 @@
 import { useForm } from 'react-hook-form';
 import { FormInput } from '../../components/form/input';
-import { CbGroup } from '../../components/form/checkbox';
+import { CbGroup } from '../../components/form/checkbox-group';
 import { ButtonGroup } from '../../components/buttons/button-group';
 import { HiAdjustments, HiOutlineFilter } from 'react-icons/hi';
 import { useState } from 'react';
 import { FormButton } from '../../components/buttons/form-button';
 import { ValidationError } from '../../components/form/validation-error';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { allOperations, NewWorksheetProps } from '../../../core/operations';
 
-
-interface NewWorksheetProps {
-  leftOperand: string;
-  rightOperand: string;
-  operations: string[];
-  numSheets: number;
-  numEquationsPerSheet: number;
-}
-
-interface BasicOperation {
-  id: string;
-  symbol: string;
-  label: string;
-  func: (a: number, b: number) => number;
-}
-
-const allOperations =
-{
-  basic: {
-    operations: [
-      {
-        id: 'add',
-        symbol: '+',
-        label: 'Addition',
-        func: (a: number, b: number) => a + b
-      },
-      {
-        id: 'sub',
-        symbol: '-',
-        label: 'Subtraction',
-        func: (a: number, b: number) => a - b
-      },
-      {
-        id: 'mult',
-        symbol: '*',
-        label: 'Multiplication',
-        func: (a: number, b: number) => a * b
-      }
-    ] as BasicOperation[],
-  },
-  family: {
-    operations: [
-      {
-        id: 'add',
-        symbol: '+',
-        label: 'Addition',
-        func: (a: number, b: number) => a + b
-      },
-      {
-        id: 'sub',
-        symbol: '-',
-        label: 'Subtraction',
-        func: (a: number, b: number) => a - b
-      }
-    ] as BasicOperation[]
-  }
-};
-
-const operationTypes = [
+export const operationTypes = [
   { value: 'basic', label: 'Basic', icon: HiOutlineFilter },
   { value: 'family', label: 'Family of facts', icon: HiAdjustments }
 ];
 
+const reqError = { message: 'Required' };
+const schema: z.ZodType<NewWorksheetProps> = z.object({
+  numSheets: z.number().int().min(1, { message: 'At least one sheet required.' }).max(100),
+  numEquationsPerSheet: z.number().int().min(1, { message: 'At least one equation per sheet.' }).max(20),
+  leftOperand: z.string().min(1, reqError),
+  rightOperand: z.string().min(1, reqError),
+  operations: z.string().array().nonempty(reqError),
+});
+
 const CreateWorksheetPage = () => {
-  const { register, control, handleSubmit, formState: { errors } } = useForm<NewWorksheetProps>({
-    defaultValues: {
-      numEquationsPerSheet: 15,
-      numSheets: 10
-    }
-  });
 
   const [operationType, setOperationType] = useState<string>('basic');
+  const { register, control, handleSubmit, formState: { errors } } = useForm<NewWorksheetProps>({
+    defaultValues: { numEquationsPerSheet: 15, numSheets: 10, operations: [] },
+    resolver: zodResolver(schema)
+  });
+
 
   const onSubmit = (data: NewWorksheetProps) => {
     // Handle form submission here
@@ -95,7 +48,7 @@ const CreateWorksheetPage = () => {
           field="numSheets"
           register={register}
           errors={errors}
-          rules={{ required: 'Required', valueAsNumber: true }}
+          rules={{ valueAsNumber: true }}
           placeholder='10'
           className='w-full'
         />
@@ -107,8 +60,8 @@ const CreateWorksheetPage = () => {
           label='Equations per sheet'
           field="numEquationsPerSheet"
           register={register}
+          rules={{ valueAsNumber: true }}
           errors={errors}
-          rules={{ required: 'Required', valueAsNumber: true }}
           placeholder='15'
           className='w-full'
         />
@@ -119,11 +72,10 @@ const CreateWorksheetPage = () => {
     <div className=''>
       <FormInput
         type="text"
-        label='Left operand'
+        label='Left operands'
         field="leftOperand"
         register={register}
         errors={errors}
-        rules={{ required: 'Required' }}
         placeholder="1-2, 3, 4, etc"
       />
       <ValidationError error={errors.leftOperand} />
@@ -132,11 +84,10 @@ const CreateWorksheetPage = () => {
     <div className=''>
       <FormInput
         type="text"
-        label='Right operand'
+        label='Right operands'
         field="rightOperand"
         register={register}
         errors={errors}
-        rules={{ required: 'Required' }}
         placeholder="1-2, 3, 4, etc"
       />
       <ValidationError error={errors.rightOperand} />

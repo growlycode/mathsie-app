@@ -8,8 +8,8 @@ export const appendStyle = (className: string | null | undefined) => {
     return className ? ' ' + className : '';
 }
 
-export const appendErrorStyle = (err: FieldError | Merge<FieldError, (FieldError | undefined)[]> | undefined) => {
-    return !!err?.message ? ' !ring-1 !ring-red-500 !border-red-500' : '';
+export const appendErrorStyle = (err: FieldError | Merge<FieldError, (FieldError | undefined)[]> | undefined, extrasIfInvalid?: string) => {
+    return !!err?.message ? ' !ring-1 !ring-red-500 !border-red-500'+ (extrasIfInvalid ? ' ' + extrasIfInvalid : '') : '';
 }
 
 
