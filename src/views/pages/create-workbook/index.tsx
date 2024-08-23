@@ -3,7 +3,7 @@ import { FormInput } from '../../components/form/input';
 import { CbGroup } from '../../components/form/checkbox-group';
 import { ButtonGroup } from '../../components/buttons/button-group';
 import { HiAdjustments, HiOutlineFilter } from 'react-icons/hi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormButton } from '../../components/buttons/form-button';
 import { ValidationError } from '../../components/form/validation-error';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,11 +27,14 @@ const schema: z.ZodType<NewWorksheetProps> = z.object({
 const CreateWorksheetPage = () => {
 
   const [operationType, setOperationType] = useState<string>('basic');
-  const { register, control, handleSubmit, formState: { errors } } = useForm<NewWorksheetProps>({
+  const { register, control, handleSubmit, resetField, formState: { errors } } = useForm<NewWorksheetProps>({
     defaultValues: { numEquationsPerSheet: 15, numSheets: 10, operations: [] },
     resolver: zodResolver(schema)
   });
 
+  useEffect(() => {
+    resetField('operations');
+  }, [operationType])
 
   const onSubmit = (data: NewWorksheetProps) => {
     // Handle form submission here

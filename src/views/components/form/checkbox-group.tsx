@@ -22,7 +22,6 @@ export function CbGroup<TFieldValues extends FieldValues>({ label, field, childr
         rules={rules}
         render={({ field, fieldState: { error } }) => {
 
-
             const onChange = (val: string, checked: boolean) => {
                 let vals = field.value ? [...field.value] : [];
                 if (!checked) vals = vals.filter(v => v !== val);
@@ -36,9 +35,9 @@ export function CbGroup<TFieldValues extends FieldValues>({ label, field, childr
                     {fields.map((f: FormSubField, idx: number) => (
                         <label key={`${field}${idx}`} className={`flex items-center gap-2${appendStyle(className)}`}>
                             <input
-
                                 type="checkbox"
                                 value={f.value}
+                                checked={!!(field.value as string[]).find(fv => fv === f.value)}
                                 onChange={val => onChange(f.value, val.currentTarget.checked)}
                             />{f.label}</label>
                     ))}
