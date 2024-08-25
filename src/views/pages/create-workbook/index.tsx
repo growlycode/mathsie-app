@@ -3,12 +3,12 @@ import { FormInput } from '../../components/form/input';
 import { CbGroup } from '../../components/form/checkbox-group';
 import { ButtonGroup } from '../../components/buttons/button-group';
 import { HiAdjustments, HiOutlineFilter } from 'react-icons/hi';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormButton } from '../../components/buttons/form-button';
 import { ValidationError } from '../../components/form/validation-error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { allOperations, NewWorksheetProps } from '../../../core/operations';
+import { allOperations, createWorkbook, NewWorksheetProps, parseOperands } from '../../../core/operations';
 
 export const operationTypes = [
   { value: 'basic', label: 'Basic', icon: HiOutlineFilter },
@@ -16,29 +16,40 @@ export const operationTypes = [
 ];
 
 const reqError = { message: 'Required' };
+const operandError = { message: 'Invalid range' };
+const operand = (numStr: string): boolean => {
+  try {
+    parseOperands(numStr);
+  } catch (err) {
+    return false;
+  }
+  return true;
+
+}
 const schema: z.ZodType<NewWorksheetProps> = z.object({
   numSheets: z.number().int().min(1, { message: 'At least one sheet required.' }).max(100),
   numEquationsPerSheet: z.number().int().min(1, { message: 'At least one equation per sheet.' }).max(20),
-  leftOperand: z.string().min(1, reqError),
-  rightOperand: z.string().min(1, reqError),
+  leftOperand: z.string().min(1, reqError).refine(operand, operandError),
+  rightOperand: z.string().min(1, reqError).refine(operand, operandError),
   operations: z.string().array().nonempty(reqError),
+  operationType: z.string().min(1, reqError)
 });
 
 const CreateWorksheetPage = () => {
 
-  const [operationType, setOperationType] = useState<string>('basic');
-  const { register, control, handleSubmit, resetField, formState: { errors } } = useForm<NewWorksheetProps>({
-    defaultValues: { numEquationsPerSheet: 15, numSheets: 10, operations: [] },
+  const { register, control, watch, setValue, handleSubmit, resetField, formState: { errors } } = useForm<NewWorksheetProps>({
+    defaultValues: { numEquationsPerSheet: 15, numSheets: 10, operations: [], operationType: 'basic' },
     resolver: zodResolver(schema)
   });
+  const operationType = watch('operationType');
 
   useEffect(() => {
     resetField('operations');
   }, [operationType])
 
   const onSubmit = (data: NewWorksheetProps) => {
-    // Handle form submission here
-    console.log(data);
+    const wb = createWorkbook(data);
+    console.log(wb);
   };
 
   const ops = useMemo(() => allOperations[operationType].operations.map(op => ({ value: op.id, label: op.label })), [operationType]);
@@ -79,9 +90,10 @@ const CreateWorksheetPage = () => {
         type="text"
         label='Left operands'
         field="leftOperand"
+        control={control}
         register={register}
         errors={errors}
-        placeholder="1-2, 3, 4, etc"
+        placeholder="1-2, 3, 4 etc"
       />
       <ValidationError error={errors.leftOperand} />
     </div>
@@ -91,16 +103,17 @@ const CreateWorksheetPage = () => {
         type="text"
         label='Right operands'
         field="rightOperand"
+        control={control}
         register={register}
         errors={errors}
-        placeholder="1-2, 3, 4, etc"
+        placeholder="1-2, 3, 4 etc"
       />
       <ValidationError error={errors.rightOperand} />
     </div>
 
     <div>
       <ButtonGroup selected={operationType} label='Operation type(s)'
-        fields={operationTypes} onSelected={setOperationType}
+        fields={operationTypes} onSelected={mode => setValue('operationType', mode)}
         className="pb-2">
       </ButtonGroup>
 
