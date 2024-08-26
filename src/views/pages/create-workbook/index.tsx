@@ -9,6 +9,8 @@ import { ValidationError } from '../../components/form/validation-error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { allOperations, createWorkbook, NewWorksheetProps, parseOperands } from '../../../core/operations';
+import { BasicOperationOperands } from './components/basic-operands';
+import { FamilyOfFactsOperationOperands } from './components/fof-operands';
 
 export const operationTypes = [
   { value: 'basic', label: 'Basic', icon: HiOutlineFilter },
@@ -45,6 +47,8 @@ const CreateWorksheetPage = () => {
 
   useEffect(() => {
     resetField('operations');
+    resetField('leftOperand');
+    resetField('rightOperand');
   }, [operationType])
 
   const onSubmit = (data: NewWorksheetProps) => {
@@ -86,32 +90,6 @@ const CreateWorksheetPage = () => {
     </div>
 
     <div>
-      <FormInput
-        type="text"
-        label='Left operands'
-        field="leftOperand"
-        control={control}
-        register={register}
-        errors={errors}
-        placeholder="1-2, 3, 4 etc"
-      />
-      <ValidationError error={errors.leftOperand} />
-    </div>
-
-    <div>
-      <FormInput
-        type="text"
-        label='Right operands'
-        field="rightOperand"
-        control={control}
-        register={register}
-        errors={errors}
-        placeholder="1-2, 3, 4 etc"
-      />
-      <ValidationError error={errors.rightOperand} />
-    </div>
-
-    <div>
       <ButtonGroup selected={operationType} label='Operation type(s)'
         fields={operationTypes} onSelected={mode => setValue('operationType', mode)}
         className="pb-2">
@@ -122,6 +100,11 @@ const CreateWorksheetPage = () => {
         <ValidationError error={errors.operations} />
       </CbGroup>
     </div>
+
+    {operationType === 'basic'
+      ? <BasicOperationOperands register={register} control={control} errors={errors}   />
+      : <FamilyOfFactsOperationOperands register={register} control={control} errors={errors} watch={watch} />}
+
 
     <FormButton>Create workbook</FormButton>
   </form>

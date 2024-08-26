@@ -55,9 +55,37 @@ export interface BasicOperation {
     func: (a: number, b: number) => number;
 }
 
-export const allOperations: { [key: string]: { operations: BasicOperation[] } } =
+export const allOperations: { [key: string]: { createSheet: (
+    operations: string[], 
+    eqsPerSheet: number, 
+    leftOps: number[], rightOps: number[],
+    operationsForWb: { [key: string]: BasicOperation } ) => NewUserWorksheet<EquationWithAnswer>, operations: BasicOperation[] } } =
 {
     basic: {
+        createSheet: (
+            operations: string[], 
+            eqsPerSheet: number, 
+            leftOps: number[], rightOps: number[],
+            operationsForWb: { [key: string]: BasicOperation } ) => {
+
+            const operation = getOperator(operations, operationsForWb);
+            const ws: NewUserWorksheet<EquationWithAnswer> = {
+                equations: iterator(eqsPerSheet).map(_ => {
+                    const left = leftOps.pop()!;
+                    const right = rightOps.pop()!;
+                    return {
+                        left,
+                        right,
+                        hasError: false,
+                        symbol: operation.symbol,
+                        answer: operation.func(left, right)
+                    }
+                })
+            };
+
+            return ws;
+
+        },
         operations: [
             {
                 id: 'add',
@@ -80,6 +108,53 @@ export const allOperations: { [key: string]: { operations: BasicOperation[] } } 
         ],
     },
     family: {
+        createSheet: (
+            operations: string[], 
+            eqsPerSheet: number, 
+            leftOps: number[], rightOps: number[],
+            operationsForWb: { [key: string]: BasicOperation } ) => {
+
+                const left = leftOps.pop()!;
+                const right = rightOps.pop()!;
+                const ans = left+right;
+
+            const perCombo = Math.ceil(eqsPerSheet / (operations.length * 2));
+            
+            const equations:EquationWithAnswer[] = [];
+
+            const createProportion = (a: number, b: number, op: BasicOperation) => {
+                for (var j = 0; j < perCombo; j++) {
+                    equations.push({
+                        left: a,
+                        right: b,
+                        hasError: false,
+                        symbol: op.symbol,
+                        answer: op.func(a, b)
+                    });
+                }
+            };
+
+            const add = operationsForWb['add'];
+            if (add) {
+                createProportion(left, right, add);
+                createProportion(right, left, add);
+            }
+
+            const sub = operationsForWb['sub'];
+            if (sub) {
+                createProportion(ans, left, sub);
+                createProportion(ans, right, sub);
+            }
+            
+            const shuffled = shuffle(equations, (start, end) => random.nextInt32([start, end]));
+
+            const ws: NewUserWorksheet<EquationWithAnswer> = {
+                equations: shuffled
+            };
+
+            return ws;
+
+        },
         operations: [
             {
                 id: 'add',
@@ -151,7 +226,9 @@ export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
     const leftOps = getOperandList(leftOperands, totalEquations);
     const rightOps = getOperandList(rightOperands, totalEquations);
 
-    const operationsForWb = allOperations[operationType]
+    const operationFamily = allOperations[operationType];
+
+    const operationsForWb = operationFamily
         .operations
         .reduce((acc: any, curr: BasicOperation) => {
             acc[curr.id] = curr;
@@ -161,20 +238,7 @@ export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
     // Create sheets of equations
     const sheets: NewUserWorksheet<EquationWithAnswer>[] = [];
     for (let s = 0; s < numSheets; s++) {
-        const operation = getOperator(operations, operationsForWb);
-        const ws: NewUserWorksheet<EquationWithAnswer> = {
-            equations: iterator(numEquationsPerSheet).map(_ => {
-                const left = leftOps.pop()!;
-                const right = rightOps.pop()!;
-                return {
-                    left,
-                    right,
-                    hasError: false,
-                    symbol: operation.symbol,
-                    answer: operation.func(left, right)
-                }
-            })
-        }
+        const ws = operationFamily.createSheet(operations, numEquationsPerSheet, leftOps, rightOps, operationsForWb)
         sheets.push(ws);
     }
 
