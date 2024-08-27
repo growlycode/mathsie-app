@@ -14,13 +14,16 @@ export interface EquationWithAnswer extends Equation  {
     answer: number;
 }
 
-export interface UserWorkbook {
-    id: string;
-    userId: DocumentReference;
+export interface NewUserWorkbook {
     title: string;
     worksheets: UserWorksheet[];
-    status: string;
     user: User;
+}
+
+export interface UserWorkbook extends NewUserWorkbook {
+    id: string;
+    userId: DocumentReference;
+    status: string;
 }
 
 export interface NewUserWorksheet<T extends Equation> {

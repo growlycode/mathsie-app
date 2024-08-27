@@ -1,6 +1,6 @@
 import { Button } from "flowbite-react";
 import { IconType } from "react-icons";
-import { FormSubField } from "../form/checkbox";
+import { FormSubField } from "../form/checkbox-group";
 
 export interface ButtonGroupProps {
     label?: string;

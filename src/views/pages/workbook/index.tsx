@@ -17,7 +17,9 @@ function WorkbookPage() {
 
 
   useEffect(() => {
-    !!user?.uid && fetchWorkbookForUser(user.uid)
+    if (user?.uid) {
+      fetchWorkbookForUser(user.uid);
+    }
   }, []);
 
   function updateWorkbook(uws: UserWorksheet) {

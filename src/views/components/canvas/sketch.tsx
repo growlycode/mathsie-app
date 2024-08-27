@@ -7,7 +7,7 @@ import { prependStyle } from "../../../infrastructure/util/css";
 interface DrawingCanvasProps {
     uws: UserWorksheet;
     className?: string;
-    onSave: (uws: UserWorksheet) => Promise<any>;
+    onSave: (uws: UserWorksheet) => Promise<UserWorksheet>;
 }
 export const SketchCanvas = ({ uws, className, onSave }: DrawingCanvasProps) => {
 

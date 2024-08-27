@@ -1,23 +1,28 @@
 import { create } from "zustand";
-import { UserWorkbook } from "../core/workbook";
+import { NewUserWorkbook, UserWorkbook } from "../core/workbook";
 import { workbookService } from "../api/workbookDb";
+import { User } from "../core/user";
 
 interface WorkbookStore {
+    students: User[];
     workbooks: UserWorkbook[];
     workbook?: UserWorkbook;
     currentPage: number;
     loading: boolean;
     error?: string | undefined;
+    createWorkbook: (wb: NewUserWorkbook) => void;
     fetchWorkbookForUser: (userId: string) => void;
     fetchWorkbooks: () => void;
+    fetchStudents: () => void;
     saveWorkbook: (wb: UserWorkbook) => void;
     setPage: (page: number) => void;
     showSidebar: boolean;
     toggleSidebar: () => void;
 }
 
-const initialState: Omit<WorkbookStore, "fetchWorkbookForUser" | "fetchWorkbooks" | "saveWorkbook" | "nextPage" | "setPage" | "toggleSidebar"> = {
+const initialState: Omit<WorkbookStore, "fetchStudents" | "createWorkbook" | "fetchWorkbookForUser" | "fetchWorkbooks" | "saveWorkbook" | "nextPage" | "setPage" | "toggleSidebar"> = {
     workbooks: [],
+    students: [],
     loading: false,
     currentPage: 0,
     showSidebar: false
@@ -64,10 +69,25 @@ const useWorkbookStore = create<WorkbookStore>((set) => {
         set(s => ({ ...s, workbook: { ...workbook, status: 'started'} }));
     },
 
+    fetchStudents: async () => {
+        return send(async () => {
+            const students = await workbookService.getStudents();
+            return { students };
+        });
+    },
+
+
     fetchWorkbookForUser: async (userId: string) => {
         return send(async () => {
             const workbook = await workbookService.getWorkbook(userId);
             return { workbook, currentPage: 0 };
+        });
+    },
+
+    createWorkbook: async (wb: NewUserWorkbook) => {
+        return send(async () => {
+            const workbook = await workbookService.createWorkbook(wb);
+            return { workbook };
         });
     },
 

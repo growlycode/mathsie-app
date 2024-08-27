@@ -7,6 +7,8 @@ import {
   Point,
 } from "../types";
 
+/* tslint:disable */
+
 /* Props validation */
 export interface MReactSketchCanvasProps
   extends Partial<

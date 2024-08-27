@@ -55,18 +55,22 @@ export interface BasicOperation {
     func: (a: number, b: number) => number;
 }
 
-export const allOperations: { [key: string]: { createSheet: (
-    operations: string[], 
-    eqsPerSheet: number, 
-    leftOps: number[], rightOps: number[],
-    operationsForWb: { [key: string]: BasicOperation } ) => NewUserWorksheet<EquationWithAnswer>, operations: BasicOperation[] } } =
+export const allOperations: {
+    [key: string]: {
+        createSheet: (
+            operations: string[],
+            eqsPerSheet: number,
+            leftOps: number[], rightOps: number[],
+            operationsForWb: { [key: string]: BasicOperation }) => NewUserWorksheet<EquationWithAnswer>, operations: BasicOperation[]
+    }
+} =
 {
     basic: {
         createSheet: (
-            operations: string[], 
-            eqsPerSheet: number, 
+            operations: string[],
+            eqsPerSheet: number,
             leftOps: number[], rightOps: number[],
-            operationsForWb: { [key: string]: BasicOperation } ) => {
+            operationsForWb: { [key: string]: BasicOperation }) => {
 
             const operation = getOperator(operations, operationsForWb);
             const ws: NewUserWorksheet<EquationWithAnswer> = {
@@ -109,18 +113,18 @@ export const allOperations: { [key: string]: { createSheet: (
     },
     family: {
         createSheet: (
-            operations: string[], 
-            eqsPerSheet: number, 
+            operations: string[],
+            eqsPerSheet: number,
             leftOps: number[], rightOps: number[],
-            operationsForWb: { [key: string]: BasicOperation } ) => {
+            operationsForWb: { [key: string]: BasicOperation }) => {
 
-                const left = leftOps.pop()!;
-                const right = rightOps.pop()!;
-                const ans = left+right;
+            const left = leftOps.pop()!;
+            const right = rightOps.pop()!;
+            const ans = left + right;
 
             const perCombo = Math.ceil(eqsPerSheet / (operations.length * 2));
-            
-            const equations:EquationWithAnswer[] = [];
+
+            const equations: EquationWithAnswer[] = [];
 
             const createProportion = (a: number, b: number, op: BasicOperation) => {
                 for (var j = 0; j < perCombo; j++) {
@@ -145,11 +149,11 @@ export const allOperations: { [key: string]: { createSheet: (
                 createProportion(ans, left, sub);
                 createProportion(ans, right, sub);
             }
-            
+
             const shuffled = shuffle(equations, (start, end) => random.nextInt32([start, end]));
 
             const ws: NewUserWorksheet<EquationWithAnswer> = {
-                equations: shuffled
+                equations: shuffled.slice(0, eqsPerSheet)
             };
 
             return ws;
@@ -228,10 +232,9 @@ export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
 
     const operationFamily = allOperations[operationType];
 
-    const operationsForWb = operationFamily
-        .operations
-        .reduce((acc: any, curr: BasicOperation) => {
-            acc[curr.id] = curr;
+    const operationsForWb = operations
+        .reduce((acc: any, curr: string) => {
+            acc[curr] = operationFamily.operations.find(o => o.id === curr);
             return acc;
         }, {});
 

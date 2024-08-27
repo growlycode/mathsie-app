@@ -33,7 +33,7 @@ export function CbGroup<TFieldValues extends FieldValues>({ label, field, childr
                 {label && <div>{label}</div>}
                 <div className='flex flex-col gap-2'>
                     {fields.map((f: FormSubField, idx: number) => (
-                        <label key={`${field}${idx}`} className={`flex items-center gap-2${appendStyle(className)}`}>
+                        <label key={`${field}${idx}`} className={`flex items-center gap-2`}>
                             <input
                                 type="checkbox"
                                 value={f.value}

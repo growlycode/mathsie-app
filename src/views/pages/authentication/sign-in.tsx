@@ -18,7 +18,7 @@ const SignInPage: FC = function () {
   const onLogin = (data: LoginProps) => {
     return login(data)
       .then(() => navigate('/'))
-      .catch(_ => setError("Invalid username or password"))
+      .catch(() => setError("Invalid username or password"))
   }
 
 

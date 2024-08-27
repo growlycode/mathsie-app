@@ -1,9 +1,9 @@
 
 
-import { collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 
 import { db } from './firebase-init';
-import { UserWorkbook } from '../core/workbook';
+import { NewUserWorkbook, UserWorkbook } from '../core/workbook';
 import { User } from '../core/user';
 
 
@@ -33,6 +33,15 @@ async function getWorkbook(userId: string) {
     wb.id = wb.id;
     return wb;
 }
+
+async function createWorkbook(workbook: NewUserWorkbook) {
+    const userRef = doc(db, 'users', workbook.user.id);
+    const wb: any = { ...workbook, userId: userRef };
+    const wbRef = collection(db, 'workbooks')
+    await addDoc(wbRef, wb);
+    return workbook;
+}
+
 async function saveWorkbook(workbook: UserWorkbook) {
     const wbRef = doc(db, 'workbooks', workbook.id)
     await setDoc(wbRef, { ...workbook })
@@ -55,10 +64,19 @@ async function getWorkbooks() {
     return uwbs;
 }
 
+async function getStudents() {
+    const uRef = collection(db, 'users');
+    const q = query(uRef, where("groups", "array-contains", "student"));
+    const students = (await getDocs(q)).docs;
+
+    return students.map(s => ({ ...s.data(), id: s.id }) as User);
+}
 
 
 export const workbookService = {
     getWorkbook,
     saveWorkbook,
-    getWorkbooks
+    getWorkbooks,
+    createWorkbook,
+    getStudents
 };
