@@ -9,7 +9,7 @@ export const appendStyle = (className: string | null | undefined) => {
 }
 
 export const appendErrorStyle = <TFieldValues extends FieldValues>(err: FieldError | Merge<FieldError, FieldErrorsImpl<DeepRequired<TFieldValues>[string]>> | undefined, extrasIfInvalid?: string) => {
-    return !!err?.message ? ' !ring-1 !ring-red-500 !border-red-500'+ (extrasIfInvalid ? ' ' + extrasIfInvalid : '') : '';
+    return !!err?.message ? ' !ring-2 !ring-red-500 !border-red-500'+ (extrasIfInvalid ? ' ' + extrasIfInvalid : '') : '';
 }
 
 

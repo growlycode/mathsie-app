@@ -7,7 +7,7 @@ const CreateWorkbook = React.lazy(() => import('../views/pages/create-workbook')
 
 const routes: RouteSpecification[] = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/workbooks/create', name: 'Create worksheet', component: CreateWorkbook, classNames: 'p-0' }
+  { path: '/workbooks/create', name: 'Create worksheet', component: CreateWorkbook, classNames: 'p-0', requiresAdmin: true }
 ];
 
 export default routes;

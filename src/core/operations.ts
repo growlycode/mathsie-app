@@ -1,14 +1,18 @@
 import { TwisterRandom } from "../infrastructure/random/twister";
 import { iterator, shuffle } from "../infrastructure/util/array";
-import { EquationWithAnswer, NewUserWorksheet, NewWorkbook } from "./workbook";
+import { User } from "./user";
+import { EquationWithAnswer, NewUserWorkbook, NewUserWorksheet } from "./workbook";
 
 export interface NewWorksheetProps {
+    title: string;
     leftOperand: string;
     rightOperand: string;
     operationType: string;
     operations: string[];
     numSheets: number;
     numEquationsPerSheet: number;
+    useDefaultTitle: boolean;
+    user?: User;
 }
 
 export interface Operand {
@@ -55,17 +59,22 @@ export interface BasicOperation {
     func: (a: number, b: number) => number;
 }
 
+export interface OperationFamily {
+
+    name: string; createSheet: (
+        operations: string[],
+        eqsPerSheet: number,
+        leftOps: number[], rightOps: number[],
+        operationsForWb: { [key: string]: BasicOperation; }) => NewUserWorksheet<EquationWithAnswer>,
+    operations: BasicOperation[]
+}
+
 export const allOperations: {
-    [key: string]: {
-        createSheet: (
-            operations: string[],
-            eqsPerSheet: number,
-            leftOps: number[], rightOps: number[],
-            operationsForWb: { [key: string]: BasicOperation }) => NewUserWorksheet<EquationWithAnswer>, operations: BasicOperation[]
-    }
+    [key: string]: OperationFamily
 } =
 {
     basic: {
+        name: 'Basic',
         createSheet: (
             operations: string[],
             eqsPerSheet: number,
@@ -112,6 +121,7 @@ export const allOperations: {
         ],
     },
     family: {
+        name: 'FoF',
         createSheet: (
             operations: string[],
             eqsPerSheet: number,
@@ -217,11 +227,9 @@ const getOperator = (operations: string[], allOps: { [key: string]: BasicOperati
     return allOps[op];
 }
 
-export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
+export const createWorkbook = (props: NewWorksheetProps, operationFamily: OperationFamily): NewUserWorkbook => {
 
-
-
-    const { numSheets, numEquationsPerSheet, operations, operationType } = props;
+    const { numSheets, numEquationsPerSheet, operations } = props;
     const leftOperands = parseOperands(props.leftOperand);
     const rightOperands = parseOperands(props.rightOperand);
 
@@ -230,7 +238,6 @@ export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
     const leftOps = getOperandList(leftOperands, totalEquations);
     const rightOps = getOperandList(rightOperands, totalEquations);
 
-    const operationFamily = allOperations[operationType];
 
     const operationsForWb = operations
         .reduce((acc: any, curr: string) => {
@@ -245,5 +252,5 @@ export const createWorkbook = (props: NewWorksheetProps): NewWorkbook => {
         sheets.push(ws);
     }
 
-    return { status: 'Assigned', worksheets: sheets };
+    return { title: props.title, user: props.user!,  worksheets: sheets };
 }

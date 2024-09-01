@@ -6,4 +6,5 @@ export interface RouteSpecification {
     childRoutes?: RouteSpecification[];
     classNames?: string;
     component?: LazyExoticComponent<() => React.JSX.Element>;
+    requiresAdmin?: boolean;
 }

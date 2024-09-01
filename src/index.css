@@ -184,3 +184,7 @@
 .fc .fc-daygrid-day-frame {
   @apply hover:bg-gray-50 cursor-pointer !important;
 }
+
+.select-field.invalid select {
+  @apply ring-2 ring-red-500 border-red-500 !important;
+}

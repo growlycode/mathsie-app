@@ -16,7 +16,7 @@ export interface EquationWithAnswer extends Equation  {
 
 export interface NewUserWorkbook {
     title: string;
-    worksheets: UserWorksheet[];
+    worksheets: NewUserWorksheet<EquationWithAnswer>[];
     user: User;
 }
 

@@ -4,6 +4,7 @@ import LogoutButton from "../auth/logout-button";
 import useWorkbookStore from "../../../store/workbookStore";
 import { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
+import Avatar from "../auth/avatar";
 
 const SiteNavbar = ({ children }: PropsWithChildren) => {
 
@@ -32,6 +33,7 @@ const SiteNavbar = ({ children }: PropsWithChildren) => {
           </div>
           <div className="flex items-center gap-2">
             <DarkThemeToggle className="hidden sm:block" />
+            <Avatar />
             <LogoutButton />
           </div>
         </div>

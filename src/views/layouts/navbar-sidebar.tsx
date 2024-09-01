@@ -7,6 +7,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import routes from "../../routes/routes";
 import { ResponsiveSidebar } from "../components/site/sidebar/responsive-sidebar";
 import { appendStyle } from "../../infrastructure/util/css";
+import { useAuth } from "../../auth/hooks";
+import { auth } from "../../api/firebase-init";
 
 interface NavbarSidebarLayoutProps {
   isFooter?: boolean;
@@ -28,10 +30,12 @@ const NavbarSidebarLayout: FC<PropsWithChildren<NavbarSidebarLayoutProps>> =
 const MainContent: FC<PropsWithChildren<NavbarSidebarLayoutProps>> = function ({
   isFooter,
 }) {
+  
+  const { isMarker } = useAuth(auth);
   return (
     <main className="relative h-full w-full overflow-y-auto bg-gray-50 dark:bg-gray-900 lg:ml-64">
       <Routes>
-        {routes.map((route, idx) => {
+        {routes.filter(r => !r.requiresAdmin || isMarker).map((route, idx) => {
           const path = route.path + (route.childRoutes?.length ? '/*' : '');
           return route.component && (
             <Route

@@ -3,7 +3,7 @@ import { FormInput, ValidationProps } from "../../../components/form/input";
 
 interface FamilyOfFactsOperationOperands extends ValidationProps<NewWorksheetProps> { }
 
-export const FamilyOfFactsOperationOperands = ({ control, register, errors, watch }: ValidationProps<NewWorksheetProps>) => {
+export const FamilyOfFactsOperationOperands = ({ control, register, trigger, errors, watch }: ValidationProps<NewWorksheetProps>) => {
 
     const left = watch!('leftOperand');
     const right = watch!('rightOperand');
@@ -11,7 +11,7 @@ export const FamilyOfFactsOperationOperands = ({ control, register, errors, watc
         return !!num?.trim()?.length && !isNaN(Number(num));
     }
 
-    return <div className="flex justify-evenly gap-4 items-end">
+    return <div className="flex justify-between gap-4 items-end">
         <div>
             <FormInput
                 type="text"
